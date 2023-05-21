@@ -34,19 +34,9 @@ export function SignIn() {
   useEffect(() => {
     if (response?.type === "success") {
       if (response.authentication?.idToken) {
-        /* fetch(
-          `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${response.authentication.idToken}`
-        )
-          .then((response) => response.json())
-          .then(console.log); */
-        console.log(
-          "response.authentication.idToken",
-          response.authentication.idToken
-        );
         const credentials = Realm.Credentials.jwt(
           response.authentication.idToken
         );
-        console.log("credentials", credentials);
         app.logIn(credentials).catch((error) => {
           console.log(error);
           Alert.alert(
@@ -55,21 +45,6 @@ export function SignIn() {
           );
         });
         setIsAuthenticating(false);
-        /*  console.log("response.authentication", response.authentication);
-        console.log("idToken", response.authentication.idToken);
-        const credentials = Realm.Credentials.jwt(
-          response.authentication.idToken
-        );
-        console.log("credentials", credentials);
-
-        app.logIn(credentials).catch((error) => {
-          console.log(error);
-          Alert.alert(
-            "Entrar",
-            "Não foi possível conectar-se a sua conta Google."
-          );
-          setIsAuthenticating(false);
-        }); */
       } else {
         Alert.alert(
           "Entrar",
@@ -86,6 +61,7 @@ export function SignIn() {
         title="Entrar com google"
         onPress={handleGoogleSignIn}
         isLoading={isAuthenticating}
+        isGoogleButton
       />
     </Container>
   );

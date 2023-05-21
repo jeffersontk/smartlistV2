@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import { Picker } from "@react-native-picker/picker";
 
 export const Container = styled.View`
   width: 100%;
@@ -14,11 +15,22 @@ export const Label = styled.Text`
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;
 
-export const Input = styled.TextInput`
+export const Select = styled(Picker)`
+  width: 88%;
   color: ${({ theme }) => theme.COLORS.GRAY_200};
   font-size: ${({ theme }) => theme.FONT_SIZE.XXXL}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 
   text-align: center;
-  margin-top: 16px;
+`;
+
+export const Option = styled(Picker.Item)`
+  text-align: center;
+`;
+
+export const Content = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;

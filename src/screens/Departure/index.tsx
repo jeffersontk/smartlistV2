@@ -6,7 +6,7 @@ import { useUser } from "@realm/react";
 import { useRealm } from "../../libs/realm";
 
 import { Header } from "../../components/Header";
-import { LicensePlateInput } from "../../components/LicensePlateInput";
+import { LicensePlateInput } from "../../components/CustomInput";
 import { TextAreaInput } from "../../components/TextAreaInput";
 import { Button } from "../../components/Button";
 import { Container, Content } from "./styles";

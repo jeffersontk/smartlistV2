@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Alert, FlatList } from "react-native";
+import { Alert, FlatList, View } from "react-native";
 import dayjs from "dayjs";
 import { useNavigation } from "@react-navigation/native";
-import { Container, Content, Label, Title } from "./styles";
+import {
+  Box,
+  Container,
+  Content,
+  Label,
+  NavigationButton,
+  Text,
+  Title,
+} from "./styles";
 import { HeaderHome } from "../../components/HeaderHome";
 import { CarStatus } from "../../components/CarStatus";
 import { useQuery, useRealm } from "../../libs/realm";
 import { Historic } from "../../libs/realm/schema/Historic";
 import { HistoricCard, HistoricCardProps } from "../../components/HistoricCard";
+import { ChartBarHorizontal, ListBullets } from "phosphor-react-native";
+import { useTheme } from "styled-components";
+import { Button } from "../../components/Button";
 
 export function Home() {
   const [vehicleInUse, setVehicleInUse] = useState<Historic | null>(null);
@@ -18,14 +29,15 @@ export function Home() {
 
   const historic = useQuery(Historic);
   const realm = useRealm();
+  const { COLORS } = useTheme();
 
-  function handleRegisterMovement() {
+  /* function handleRegisterMovement() {
     if (vehicleInUse?._id) {
       return navigate("arrival", { id: vehicleInUse._id.toString() });
     } else {
       navigate("departure");
     }
-  }
+  } */
 
   function fetchVehicleInUse() {
     try {
@@ -58,10 +70,12 @@ export function Home() {
     setVehicleHistoric(formattedHistoric);
   }
 
-  function handleHistoricDetails(id: string) {
-    navigate("arrival", {
-      id,
-    });
+  function handleStartPurchase() {
+    navigate("startpurchase");
+  }
+
+  function handleMyList() {
+    navigate("mylist");
   }
 
   useEffect(() => {
@@ -85,12 +99,17 @@ export function Home() {
     <Container>
       <HeaderHome />
       <Content>
-        <CarStatus
-          licensePlate={vehicleInUse?.license_plate}
-          onPress={handleRegisterMovement}
-        />
-        <Title>Histórico</Title>
-        <FlatList
+        <Box>
+          <NavigationButton activeOpacity={0.7} onPress={handleMyList}>
+            <ListBullets size={28} color={COLORS.GRAY_100} />
+            <Text>Minha lista</Text>
+          </NavigationButton>
+          <NavigationButton>
+            <ChartBarHorizontal size={32} color={COLORS.GRAY_100} />
+            <Text>Analises de compras</Text>
+          </NavigationButton>
+          <Title>Histórico</Title>
+          {/*   <FlatList
           data={vehicleHistoric}
           keyExtractor={(item) => item!.id}
           renderItem={({ item }) => (
@@ -102,7 +121,10 @@ export function Home() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 100 }}
           ListEmptyComponent={<Label>Nenhum veículo utilizado</Label>}
-        />
+        /> */}
+          <HistoricCard />
+        </Box>
+        <Button title=" Iniciar Compras" onPress={handleStartPurchase} />
       </Content>
     </Container>
   );
