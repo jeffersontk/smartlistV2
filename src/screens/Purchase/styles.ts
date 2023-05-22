@@ -7,5 +7,12 @@ export const Container = styled.View`
 
 export const Content = styled.View`
   padding: 32px;
+  flex: 1;
+  justify-content: space-between;
+  gap: 16px;
+`;
+
+export const Box = styled.View`
+  flex: 1;
   gap: 16px;
 `;

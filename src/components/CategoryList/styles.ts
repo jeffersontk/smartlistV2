@@ -2,6 +2,7 @@ import styled from "styled-components/native";
 
 export const Container = styled.FlatList`
   width: 100%;
+  max-height: 56px;
   gap: 16px;
 `;
 

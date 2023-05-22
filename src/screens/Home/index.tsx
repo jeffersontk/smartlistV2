@@ -122,7 +122,7 @@ export function Home() {
           contentContainerStyle={{ paddingBottom: 100 }}
           ListEmptyComponent={<Label>Nenhum veículo utilizado</Label>}
         /> */}
-          <HistoricCard />
+          <HistoricCard activeOpacity={0.7} />
         </Box>
         <Button title=" Iniciar Compras" onPress={handleStartPurchase} />
       </Content>

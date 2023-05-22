@@ -12,7 +12,12 @@ const { Navigator, Screen, Group } = createNativeStackNavigator();
 
 export function AppRoutes() {
   return (
-    <Navigator screenOptions={{ headerShown: false }}>
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+        animationTypeForReplace: "push",
+      }}
+    >
       <Screen name="home" component={Home} />
       <Screen name="startpurchase" component={StartPurchase} />
       <Group>
