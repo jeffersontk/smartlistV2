@@ -11,7 +11,6 @@ import {
   TotalInCart,
   TotalPrice,
 } from "./styles";
-import { Header } from "../../components/Header";
 import { SearchButton } from "../../components/SearchButton";
 import { Button } from "../../components/Button";
 
@@ -23,7 +22,6 @@ export function Cart() {
   }
   return (
     <Container>
-      <Header title="Carrinho" />
       <Content>
         <TotalInCart>
           <Title>Total no carrinho</Title>

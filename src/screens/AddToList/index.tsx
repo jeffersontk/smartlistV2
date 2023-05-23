@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Content, Title } from "./styles";
-import { Header } from "../../components/Header";
 import { CustomInput } from "../../components/CustomInput";
 import { CustomSelect } from "../../components/CustomSelect";
 import { ItemList } from "../../components/ItemList";
@@ -12,7 +11,6 @@ export function AddToList() {
   }
   return (
     <Container>
-      <Header title="Adicionar a lista" />
       <Content>
         <Title>Novo Produto</Title>
         <CustomInput label="Nome do produto" />

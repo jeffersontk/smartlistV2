@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TouchableOpacityProps } from "react-native";
 import { Check, Clock } from "phosphor-react-native";
 import {
@@ -13,29 +13,45 @@ import { useTheme } from "styled-components";
 
 export type HistoricCardProps = {
   id: string;
-  licensePlate: string;
-  created: string;
-  isSync: boolean;
+  marketName: string;
+  purchaseDay: string;
+  purchaseValue: string;
+  quantityItems: string;
+  paymentMethod: string;
 };
 
 type Props = TouchableOpacityProps & {
-  data?: HistoricCardProps;
+  data: HistoricCardProps;
+  enableSelect?: boolean;
 };
 
-export function HistoricCard({ data, ...rest }: Props) {
+export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
   const { COLORS } = useTheme();
+  const selectCard = { borderColor: COLORS.BRAND_MID, borderWidth: 2 };
+  const [isSelected, setIsSelected] = useState(false);
+
+  function handleSelected() {
+    if (enableSelect) {
+      setIsSelected(!isSelected);
+    }
+  }
+
   return (
-    <Container {...rest}>
+    <Container
+      style={isSelected && selectCard}
+      onPress={handleSelected}
+      {...rest}
+    >
       <Header>
-        <MarketName>Guanabara</MarketName>
+        <MarketName>{data.marketName}</MarketName>
         <ContentDate>
           <Clock size={16} color={COLORS.GRAY_400} />
-          <PurchaseDay>21/05/2023</PurchaseDay>
+          <PurchaseDay>{data.purchaseDay}</PurchaseDay>
         </ContentDate>
       </Header>
-      <Text>Valor da compra: R$ 896,72</Text>
-      <Text>Quantidade de items: 154</Text>
-      <Text>Pagamento: Vale Alimentação</Text>
+      <Text>Valor da compra: {data.purchaseValue}</Text>
+      <Text>Quantidade de items: {data.quantityItems}</Text>
+      <Text>Pagamento: {data.paymentMethod}</Text>
     </Container>
   );
 }

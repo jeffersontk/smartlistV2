@@ -10,7 +10,7 @@ export function CategoryList() {
   const flatListRef = useRef<FlatList>(null);
 
   function handleNavigateCategory(route: any) {
-    navigate(route.name, route.category);
+    navigate(route.name, { category: route.category });
   }
 
   useEffect(() => {

@@ -19,6 +19,7 @@ import { HistoricCard, HistoricCardProps } from "../../components/HistoricCard";
 import { ChartBarHorizontal, ListBullets } from "phosphor-react-native";
 import { useTheme } from "styled-components";
 import { Button } from "../../components/Button";
+import { fakeHistoric } from "../../data/fakeHistoric";
 
 export function Home() {
   const [vehicleInUse, setVehicleInUse] = useState<Historic | null>(null);
@@ -52,7 +53,7 @@ export function Home() {
     }
   }
 
-  function fetchHistoric() {
+  /*   function fetchHistoric() {
     const response = historic.filtered(
       "status = 'arrival' SORT(created_at DESC)"
     );
@@ -68,7 +69,7 @@ export function Home() {
     });
 
     setVehicleHistoric(formattedHistoric);
-  }
+  } */
 
   function handleStartPurchase() {
     navigate("startpurchase");
@@ -76,6 +77,14 @@ export function Home() {
 
   function handleMyList() {
     navigate("mylist");
+  }
+
+  function handleDetailsPurchase(item: HistoricCardProps) {
+    navigate("purchasedetails", item);
+  }
+
+  function handleSelectPurchasesForAnalysis() {
+    navigate("selectpurchases");
   }
 
   useEffect(() => {
@@ -91,38 +100,39 @@ export function Home() {
     };
   }, []);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     fetchHistoric();
-  }, [historic]);
+  }, [historic]); */
 
   return (
     <Container>
-      <HeaderHome />
       <Content>
         <Box>
           <NavigationButton activeOpacity={0.7} onPress={handleMyList}>
             <ListBullets size={28} color={COLORS.GRAY_100} />
             <Text>Minha lista</Text>
           </NavigationButton>
-          <NavigationButton>
+          <NavigationButton
+            activeOpacity={0.7}
+            onPress={handleSelectPurchasesForAnalysis}
+          >
             <ChartBarHorizontal size={32} color={COLORS.GRAY_100} />
             <Text>Analises de compras</Text>
           </NavigationButton>
           <Title>Histórico</Title>
-          {/*   <FlatList
-          data={vehicleHistoric}
-          keyExtractor={(item) => item!.id}
-          renderItem={({ item }) => (
-            <HistoricCard
-              data={item}
-              onPress={() => handleHistoricDetails(item.id)}
-            />
-          )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 100 }}
-          ListEmptyComponent={<Label>Nenhum veículo utilizado</Label>}
-        /> */}
-          <HistoricCard activeOpacity={0.7} />
+          <FlatList
+            data={fakeHistoric}
+            keyExtractor={(item) => item!.id}
+            renderItem={({ item }) => (
+              <HistoricCard
+                data={item}
+                onPress={() => handleDetailsPurchase(item)}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 100 }}
+            ListEmptyComponent={<Label>Nenhum veículo utilizado</Label>}
+          />
         </Box>
         <Button title=" Iniciar Compras" onPress={handleStartPurchase} />
       </Content>

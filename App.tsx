@@ -19,6 +19,7 @@ import { SignIn } from "./src/screens/SignIn";
 import { Loading } from "./src/components/Loading";
 import { Routes } from "./src/routes";
 import { RealmProvider } from "./src/libs/realm";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
@@ -30,20 +31,22 @@ export default function App() {
   return (
     <AppProvider id={REALM_APP_ID}>
       <ThemeProvider theme={theme}>
-        <SafeAreaProvider
-          style={{ flex: 1, backgroundColor: theme.COLORS.GRAY_800 }}
-        >
-          <StatusBar
-            barStyle="light-content"
-            backgroundColor="transparent"
-            translucent
-          />
-          <UserProvider fallback={SignIn}>
-            <RealmProvider>
-              <Routes />
-            </RealmProvider>
-          </UserProvider>
-        </SafeAreaProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <SafeAreaProvider
+            style={{ flex: 1, backgroundColor: theme.COLORS.GRAY_800 }}
+          >
+            <StatusBar
+              barStyle="light-content"
+              backgroundColor="transparent"
+              translucent
+            />
+            <UserProvider fallback={SignIn}>
+              <RealmProvider>
+                <Routes />
+              </RealmProvider>
+            </UserProvider>
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
       </ThemeProvider>
     </AppProvider>
   );

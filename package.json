@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.3",
+    "@react-native-picker/picker": "2.4.8",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@realm/react": "^0.4.3",
+    "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "expo": "~48.0.15",
     "expo-auth-session": "~4.0.3",
@@ -34,7 +36,8 @@
     "react-native-svg": "13.4.0",
     "realm": "^11.9.0",
     "styled-components": "^5.3.9",
-    "@react-native-picker/picker": "2.4.8"
+    "react-native-reanimated": "~2.14.4",
+    "react-native-gesture-handler": "~2.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

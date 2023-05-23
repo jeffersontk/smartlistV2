@@ -15,7 +15,6 @@ const CustomInput = forwardRef<TextInput, Props>(({ label, ...rest }, ref) => {
       <Input
         ref={ref}
         autoCapitalize="characters"
-        returnKeyType="send"
         placeholderTextColor={COLORS.GRAY_400}
         {...rest}
       />

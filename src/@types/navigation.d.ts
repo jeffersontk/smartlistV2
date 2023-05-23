@@ -3,20 +3,38 @@ export declare global {
     interface RootParamList {
       home: undefined;
       startpurchase: undefined;
-      Mercearia: undefined;
-      Condimentos: undefined;
-      Proteina: undefined;
-      "Lacticínios & Frios": undefined;
-      Doces: undefined;
-      Congelados: undefined;
-      Hortifruti: undefined;
-      Descartáveis: undefined;
-      "Higiene pessoal": undefined;
-      "Produtos de limpeza": undefined;
-      "Produtos de Bebê": undefined;
+      Mercearia: { category: string };
+      Condimentos: { category: string };
+      Proteina: { category: string };
+      "Lacticínios & Frios": { category: string };
+      Doces: { category: string };
+      Congelados: { category: string };
+      Hortifruti: { category: string };
+      Descartáveis: { category: string };
+      "Higiene pessoal": { category: string };
+      "Produtos de limpeza": { category: string };
+      "Produtos de Bebê": { category: string };
       cart: undefined;
       mylist: undefined;
       addtolist: undefined;
+      addtocart: {
+        productName: string;
+        category: string;
+      };
+      ihaveathome: {
+        productName: string;
+        category: string;
+      };
+      purchasedetails: {
+        id: string;
+        marketName: string;
+        purchaseDay: string;
+        purchaseValue: string;
+        quantityItems: string;
+        paymentMethod: string;
+      };
+      selectpurchases: undefined;
+      purchasingAnalysis: undefined;
     }
   }
 }
