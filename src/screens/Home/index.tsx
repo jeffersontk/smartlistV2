@@ -11,8 +11,6 @@ import {
   Text,
   Title,
 } from "./styles";
-import { HeaderHome } from "../../components/HeaderHome";
-import { CarStatus } from "../../components/CarStatus";
 import { useQuery, useRealm } from "../../libs/realm";
 import { Historic } from "../../libs/realm/schema/Historic";
 import { HistoricCard, HistoricCardProps } from "../../components/HistoricCard";
@@ -28,7 +26,6 @@ export function Home() {
   );
   const { navigate } = useNavigation();
 
-  const historic = useQuery(Historic);
   const realm = useRealm();
   const { COLORS } = useTheme();
 
@@ -40,7 +37,7 @@ export function Home() {
     }
   } */
 
-  function fetchVehicleInUse() {
+  /*  function fetchVehicleInUse() {
     try {
       const vehicle = historic.filtered("status = 'departure'")[0];
       setVehicleInUse(vehicle);
@@ -51,7 +48,7 @@ export function Home() {
       );
       console.log(error);
     }
-  }
+  } */
 
   /*   function fetchHistoric() {
     const response = historic.filtered(
@@ -87,7 +84,7 @@ export function Home() {
     navigate("selectpurchases");
   }
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetchVehicleInUse();
   }, []);
 
@@ -99,7 +96,7 @@ export function Home() {
       }
     };
   }, []);
-
+ */
   /*   useEffect(() => {
     fetchHistoric();
   }, [historic]); */
@@ -130,8 +127,7 @@ export function Home() {
               />
             )}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 100 }}
-            ListEmptyComponent={<Label>Nenhum veículo utilizado</Label>}
+            ListEmptyComponent={<Label>Nenhuma compra realizada</Label>}
           />
         </Box>
         <Button title=" Iniciar Compras" onPress={handleStartPurchase} />

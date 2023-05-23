@@ -6,7 +6,7 @@ import { useUser } from "@realm/react";
 import { useRealm } from "../../libs/realm";
 
 import { Header } from "../../components/Header";
-import { LicensePlateInput } from "../../components/CustomInput";
+
 import { TextAreaInput } from "../../components/TextAreaInput";
 import { Button } from "../../components/Button";
 import { Container, Content } from "./styles";
@@ -70,14 +70,14 @@ export function Departure() {
       <KeyboardAwareScrollView extraHeight={100}>
         <ScrollView>
           <Content>
-            <LicensePlateInput
+            {/*  <LicensePlateInput
               ref={licensePlateRef}
               label="Placa do veículo"
               placeholder="BRA1234"
               onSubmitEditing={() => descriptionRef.current?.focus()}
               returnKeyType="next"
               onChangeText={setLicensePlate}
-            />
+            /> */}
 
             <TextAreaInput
               ref={descriptionRef}

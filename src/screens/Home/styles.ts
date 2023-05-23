@@ -12,6 +12,7 @@ export const Content = styled.View`
 `;
 export const Box = styled.View`
   flex: 1;
+  margin-bottom: 16px;
 `;
 export const Label = styled.Text`
   color: ${({ theme }) => theme.COLORS.GRAY_400};

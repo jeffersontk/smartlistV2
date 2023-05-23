@@ -9,4 +9,5 @@ export const Container = styled.View`
 export const Content = styled.View`
   flex: 1;
   gap: 16px;
+  margin-bottom: 16px;
 `;

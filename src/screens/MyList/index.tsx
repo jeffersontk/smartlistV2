@@ -5,13 +5,20 @@ import { Plus } from "phosphor-react-native";
 import { useTheme } from "styled-components";
 import { useNavigation } from "@react-navigation/native";
 import { ItemList } from "../../components/ItemList";
+import { FlatList } from "react-native";
+import { Category } from "../../utils/enumCategory";
+import { Product } from "../../libs/realm/schema/Product";
+import { useQuery, useRealm } from "../../libs/realm";
 
 export function MyList() {
-  const { COLORS } = useTheme();
   const { navigate } = useNavigation();
+  const realm = useRealm();
+  const products = useQuery(Product);
 
-  function handleDelete() {
-    console.log("delete");
+  function handleDelete(item: Product) {
+    realm.write(() => {
+      realm.delete(item);
+    });
   }
 
   function handleAddToList() {
@@ -21,10 +28,17 @@ export function MyList() {
   return (
     <Container>
       <Content>
-        <ItemList
-          handleDelete={handleDelete}
-          title="Arroz"
-          subtitle="Mercearia"
+        <FlatList
+          data={products}
+          keyExtractor={(item) => String(item!._id)}
+          renderItem={({ item }) => (
+            <ItemList
+              handleDelete={() => handleDelete(item)}
+              title={item.name}
+              subtitle={item.category as keyof typeof Category}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
         />
       </Content>
       <Footer>

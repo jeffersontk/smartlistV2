@@ -1,7 +1,9 @@
 import { createRealmContext } from "@realm/react";
-import { Historic } from "./schema/Historic";
+import { Product } from "./schema/Product";
+import { Purchase } from "./schema/Purchase";
+import { ProductInCart } from "./schema/ProductInCart";
 
 export const { RealmProvider, useRealm, useQuery, useObject } =
   createRealmContext({
-    schema: [Historic],
+    schema: [Product, ProductInCart, Purchase],
   });
