@@ -20,6 +20,7 @@ import { Loading } from "./src/components/Loading";
 import { Routes } from "./src/routes";
 import { RealmProvider } from "./src/libs/realm";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import PurchaseProvider from "./src/context/purchase";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
@@ -42,7 +43,9 @@ export default function App() {
             />
             <UserProvider fallback={SignIn}>
               <RealmProvider>
-                <Routes />
+                <PurchaseProvider>
+                  <Routes />
+                </PurchaseProvider>
               </RealmProvider>
             </UserProvider>
           </SafeAreaProvider>

@@ -40,6 +40,9 @@ export function AddToList() {
           })
         );
       });
+
+      setName("");
+      setCategory("");
     } catch (error) {}
   }
 
@@ -58,6 +61,7 @@ export function AddToList() {
           label="Nome do produto"
           returnKeyType="next"
           onChangeText={setName}
+          value={name}
         />
         <CustomSelect
           ref={categoryRef}

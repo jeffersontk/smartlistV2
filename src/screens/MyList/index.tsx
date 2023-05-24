@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Content, Footer } from "./styles";
 import { ButtonIcon } from "../../components/ButtonIcon";
 import { Plus } from "phosphor-react-native";
@@ -9,11 +9,17 @@ import { FlatList } from "react-native";
 import { Category } from "../../utils/enumCategory";
 import { Product } from "../../libs/realm/schema/Product";
 import { useQuery, useRealm } from "../../libs/realm";
+import { SearchButton } from "../../components/SearchButton";
 
 export function MyList() {
+  const [searchOpen, setSearchOpen] = useState(false);
   const { navigate } = useNavigation();
   const realm = useRealm();
   const products = useQuery(Product);
+
+  function handleSearchOpen() {
+    setSearchOpen(!searchOpen);
+  }
 
   function handleDelete(item: Product) {
     realm.write(() => {
@@ -40,10 +46,15 @@ export function MyList() {
           )}
           showsVerticalScrollIndicator={false}
         />
+        <Footer>
+          <SearchButton
+            isOpen={searchOpen}
+            onPress={handleSearchOpen}
+            onClose={() => setSearchOpen(false)}
+          />
+          <ButtonIcon icon={Plus} onPress={handleAddToList} />
+        </Footer>
       </Content>
-      <Footer>
-        <ButtonIcon icon={Plus} onPress={handleAddToList} />
-      </Footer>
     </Container>
   );
 }

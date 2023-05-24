@@ -12,5 +12,8 @@ export const Content = styled.View`
 `;
 
 export const Footer = styled.View`
-  padding: 32px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
 `;

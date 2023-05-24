@@ -18,6 +18,10 @@ export const Search = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+
+  z-index: 10;
+  position: absolute;
 `;
 
 export const Input = styled.TextInput`
@@ -26,5 +30,6 @@ export const Input = styled.TextInput`
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 
   text-align: center;
+  width: 100%;
   max-width: 250px;
 `;

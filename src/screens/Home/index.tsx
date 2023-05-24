@@ -18,58 +18,18 @@ import { ChartBarHorizontal, ListBullets } from "phosphor-react-native";
 import { useTheme } from "styled-components";
 import { Button } from "../../components/Button";
 import { fakeHistoric } from "../../data/fakeHistoric";
+import { usePurchase } from "../../context/purchase";
 
 export function Home() {
-  const [vehicleInUse, setVehicleInUse] = useState<Historic | null>(null);
-  const [vehicleHistoric, setVehicleHistoric] = useState<HistoricCardProps[]>(
-    []
-  );
   const { navigate } = useNavigation();
-
-  const realm = useRealm();
+  const { purchase } = usePurchase();
   const { COLORS } = useTheme();
-
-  /* function handleRegisterMovement() {
-    if (vehicleInUse?._id) {
-      return navigate("arrival", { id: vehicleInUse._id.toString() });
-    } else {
-      navigate("departure");
-    }
-  } */
-
-  /*  function fetchVehicleInUse() {
-    try {
-      const vehicle = historic.filtered("status = 'departure'")[0];
-      setVehicleInUse(vehicle);
-    } catch (error) {
-      Alert.alert(
-        "Veiculo em uso",
-        "Não foi possível carregar o veiculo em uso."
-      );
-      console.log(error);
-    }
-  } */
-
-  /*   function fetchHistoric() {
-    const response = historic.filtered(
-      "status = 'arrival' SORT(created_at DESC)"
-    );
-    const formattedHistoric = response.map((item) => {
-      return {
-        id: item._id!.toString(),
-        licensePlate: item.license_plate,
-        isSync: false,
-        created: dayjs(item.created_at).format(
-          "[Saida em] DD/MM/YYYY [às] HH:mm"
-        ),
-      };
-    });
-
-    setVehicleHistoric(formattedHistoric);
-  } */
 
   function handleStartPurchase() {
     navigate("startpurchase");
+  }
+  function handlePurchase() {
+    navigate("Condimentos", { category: "grocery" });
   }
 
   function handleMyList() {
@@ -83,23 +43,6 @@ export function Home() {
   function handleSelectPurchasesForAnalysis() {
     navigate("selectpurchases");
   }
-
-  /* useEffect(() => {
-    fetchVehicleInUse();
-  }, []);
-
-  useEffect(() => {
-    realm.addListener("change", () => fetchVehicleInUse());
-    return () => {
-      if (realm && !realm.isClosed) {
-        realm.removeListener("change", fetchVehicleInUse);
-      }
-    };
-  }, []);
- */
-  /*   useEffect(() => {
-    fetchHistoric();
-  }, [historic]); */
 
   return (
     <Container>
@@ -130,7 +73,11 @@ export function Home() {
             ListEmptyComponent={<Label>Nenhuma compra realizada</Label>}
           />
         </Box>
-        <Button title=" Iniciar Compras" onPress={handleStartPurchase} />
+        {Object.keys(purchase).length > 0 ? (
+          <Button title="Voltar as compras" onPress={handlePurchase} />
+        ) : (
+          <Button title="Iniciar Compras" onPress={handleStartPurchase} />
+        )}
       </Content>
     </Container>
   );
