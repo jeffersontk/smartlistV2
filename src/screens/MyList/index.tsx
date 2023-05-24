@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Content, Footer } from "./styles";
 import { ButtonIcon } from "../../components/ButtonIcon";
 import { Plus } from "phosphor-react-native";
@@ -13,6 +13,8 @@ import { SearchButton } from "../../components/SearchButton";
 
 export function MyList() {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchProduct, setSearchProduct] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState<any>([]);
   const { navigate } = useNavigation();
   const realm = useRealm();
   const products = useQuery(Product);
@@ -31,11 +33,27 @@ export function MyList() {
     navigate("addtolist");
   }
 
+  useEffect(() => {
+    if (searchProduct.length > 0) {
+      const filtered = products.filter((product: any) =>
+        product.name.toLowerCase().includes(searchProduct.toLocaleLowerCase())
+      );
+
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [searchProduct, products]);
+  const productList =
+    searchProduct && searchProduct.length > 0
+      ? filteredProducts
+      : products || [];
+
   return (
     <Container>
       <Content>
         <FlatList
-          data={products}
+          data={productList}
           keyExtractor={(item) => String(item!._id)}
           renderItem={({ item }) => (
             <ItemList
@@ -51,8 +69,10 @@ export function MyList() {
             isOpen={searchOpen}
             onPress={handleSearchOpen}
             onClose={() => setSearchOpen(false)}
+            value={searchProduct}
+            onChangeValue={setSearchProduct}
           />
-          <ButtonIcon icon={Plus} onPress={handleAddToList} />
+          {!searchOpen && <ButtonIcon icon={Plus} onPress={handleAddToList} />}
         </Footer>
       </Content>
     </Container>

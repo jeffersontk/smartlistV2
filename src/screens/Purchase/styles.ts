@@ -21,6 +21,7 @@ export const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-top: 16px;
 `;
 
 export const List = styled.FlatList`

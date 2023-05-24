@@ -4,6 +4,8 @@ export const Container = styled.View`
   flex: 1;
 
   background-color: ${({ theme }) => theme.COLORS.GRAY_800};
+  padding: 32px;
+  gap: 16px;
 `;
 
 export const Title = styled.Text`

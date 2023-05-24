@@ -19,9 +19,6 @@ export const Search = styled.View`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-
-  z-index: 10;
-  position: absolute;
 `;
 
 export const Input = styled.TextInput`

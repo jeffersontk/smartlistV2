@@ -39,7 +39,5 @@ export const Input = styled.TextInput`
   color: ${({ theme }) => theme.COLORS.GRAY_200};
   font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
-
-  text-align: center;
-  margin-top: 16px;
+  width: 100px;
 `;

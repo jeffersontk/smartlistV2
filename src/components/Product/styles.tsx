@@ -14,10 +14,18 @@ export const Container = styled.TouchableOpacity`
   margin-bottom: 16px;
 `;
 
-export const Label = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_100};
+interface labelProps {
+  isDisabled: boolean;
+}
+
+export const Label = styled.Text<labelProps>`
+  color: ${({ theme, isDisabled }) =>
+    isDisabled ? theme.COLORS.GRAY_300 : theme.COLORS.GRAY_100};
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
+
+  text-decoration: ${({ isDisabled }) =>
+    isDisabled ? "line-through" : "none"};
 `;
 
 export const Info = styled.View`

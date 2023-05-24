@@ -41,29 +41,15 @@ export const Box = styled.View`
   gap: 16px;
 `;
 
-export const ItemCart = styled.View`
-  width: 100%;
-  border-radius: 6px;
-  padding: 16px;
-
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
-  flex-direction: row;
+export const Row = styled.View`
+  /*   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; */
+  gap: 16px;
 `;
 
-export const Name = styled.Text`
+export const Text = styled.Text`
   color: ${({ theme }) => theme.COLORS.GRAY_200};
   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
-`;
-export const Quantity = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_200};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-  font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
-`;
-export const Price = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_200};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-  font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;

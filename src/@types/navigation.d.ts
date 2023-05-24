@@ -22,6 +22,7 @@ export declare global {
         category: string;
       };
       ihaveathome: {
+        id: string;
         productName: string;
         category: string;
       };

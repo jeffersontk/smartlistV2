@@ -1,4 +1,4 @@
-import React, { MutableRefObject } from "react";
+import React, { MutableRefObject, useRef } from "react";
 import { TouchableOpacityProps } from "react-native";
 import { Container, Info, Label, Text } from "./styles";
 import { CheckSquare, Square } from "phosphor-react-native";
@@ -11,9 +11,12 @@ type Props = TouchableOpacityProps & {
   title: string;
   price?: string;
   quantityAtHome?: string;
+  measurement?: string;
   isCheck?: boolean;
-  swipeableRef: MutableRefObject<any>;
+  status?: string;
+  isCheckAtHome?: boolean;
   goToIHaveAtHome: () => void;
+  onRemoveToIHaveAtHome: () => void;
 };
 
 export function Product({
@@ -21,11 +24,16 @@ export function Product({
   price,
   quantityAtHome,
   isCheck = false,
-  swipeableRef,
+  isCheckAtHome = false,
+  status,
+  measurement,
   goToIHaveAtHome,
+  onRemoveToIHaveAtHome,
   ...rest
 }: Props) {
   const { COLORS } = useTheme();
+  const swipeableRef = useRef<any>(null);
+
   function Checkbox() {
     if (isCheck) {
       return <CheckSquare size={32} color={COLORS.BRAND_LIGHT} />;
@@ -35,11 +43,20 @@ export function Product({
   }
 
   function handleIHaveAtHome() {
-    swipeableRef.current.close();
+    if (swipeableRef.current) {
+      swipeableRef.current.close();
+    }
     goToIHaveAtHome();
   }
 
-  const LeftSwipeActions = () => {
+  function handleEnabled() {
+    onRemoveToIHaveAtHome();
+    if (swipeableRef.current) {
+      swipeableRef.current.close();
+    }
+  }
+
+  const handleIHave = () => {
     return (
       <Button
         title="Ja tenho"
@@ -54,14 +71,42 @@ export function Product({
     );
   };
 
+  function handleEnabledButton() {
+    return (
+      <Button
+        title="Desmarcar"
+        onPress={handleEnabled}
+        style={{
+          maxWidth: 100,
+          backgroundColor: COLORS.RED_500,
+          marginRight: 16,
+          marginTop: 5,
+        }}
+      />
+    );
+  }
+
   return (
-    <Swipeable ref={swipeableRef} renderLeftActions={LeftSwipeActions}>
-      <Container activeOpacity={0.7} {...rest}>
+    <Swipeable
+      ref={swipeableRef}
+      renderLeftActions={
+        !isCheckAtHome && status !== "iNeed" ? handleIHave : handleEnabledButton
+      }
+    >
+      <Container
+        activeOpacity={0.7}
+        {...rest}
+        disabled={isCheckAtHome && status !== "iNeed"}
+      >
         <Info>
-          <Label>{title}</Label>
+          <Label isDisabled={isCheckAtHome && status !== "iNeed"}>
+            {title}
+          </Label>
           {price && <Text>Preço unitário: R$ {+price}</Text>}
           {quantityAtHome && (
-            <Text>Quantidade em casa: R$ {quantityAtHome}</Text>
+            <Text>
+              Quantidade em casa: {quantityAtHome} {measurement}
+            </Text>
           )}
         </Info>
         {Checkbox()}
