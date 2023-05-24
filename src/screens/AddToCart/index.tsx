@@ -17,7 +17,7 @@ export function AddToCart() {
   const route = useRoute();
   const { productName, category } = route.params as routeParamsProps;
   const { goBack } = useNavigation();
-  const { addToCart, cart } = usePurchase();
+  const { addToCart } = usePurchase();
 
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("1");

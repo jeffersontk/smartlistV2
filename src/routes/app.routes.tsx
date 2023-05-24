@@ -13,6 +13,7 @@ import { HeaderHome } from "../components/HeaderHome";
 import { PurchasingAnalysis } from "../screens/PurchasingAnalysis";
 import { PurchaseDetails } from "../screens/PurchaseDetails";
 import { SelectPurchaseForAnalysis } from "../screens/SelectPurchaseForAnalysis";
+import { Checkout } from "../screens/Checkout";
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -88,6 +89,13 @@ export function AppRoutes() {
         component={PurchasingAnalysis}
         options={{
           header: () => <Header title="Analise de compras" />,
+        }}
+      />
+      <Screen
+        name="checkout"
+        component={Checkout}
+        options={{
+          header: () => <Header title="Finalizar compras" />,
         }}
       />
       <Group

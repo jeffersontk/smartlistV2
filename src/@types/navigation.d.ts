@@ -1,3 +1,5 @@
+import { Purchase } from "../libs/realm/schema/Purchase";
+
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
@@ -26,16 +28,10 @@ export declare global {
         productName: string;
         category: string;
       };
-      purchasedetails: {
-        id: string;
-        marketName: string;
-        purchaseDay: string;
-        purchaseValue: string;
-        quantityItems: string;
-        paymentMethod: string;
-      };
+      purchasedetails: Purchase;
       selectpurchases: undefined;
       purchasingAnalysis: undefined;
+      checkout: undefined;
     }
   }
 }

@@ -10,6 +10,7 @@ import {
   Text,
 } from "./styles";
 import { useTheme } from "styled-components";
+import { Purchase } from "../../libs/realm/schema/Purchase";
 
 export type HistoricCardProps = {
   id: string;
@@ -21,11 +22,12 @@ export type HistoricCardProps = {
 };
 
 type Props = TouchableOpacityProps & {
-  data: HistoricCardProps;
+  data: Purchase;
   enableSelect?: boolean;
 };
 
 export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
+  console.log("data", data);
   const { COLORS } = useTheme();
   const selectCard = { borderColor: COLORS.BRAND_MID, borderWidth: 2 };
   const [isSelected, setIsSelected] = useState(false);
@@ -46,11 +48,17 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
         <MarketName>{data.marketName}</MarketName>
         <ContentDate>
           <Clock size={16} color={COLORS.GRAY_400} />
-          <PurchaseDay>{data.purchaseDay}</PurchaseDay>
+          {/*   <PurchaseDay>{data.purchaseDay}</PurchaseDay> */}
         </ContentDate>
       </Header>
-      <Text>Valor da compra: {data.purchaseValue}</Text>
-      <Text>Quantidade de items: {data.quantityItems}</Text>
+      <Text>
+        Valor da compra:
+        {new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(+data.purchaseValue)}
+      </Text>
+      {/*       <Text>Quantidade de items: {data.quantityItems}</Text> */}
       <Text>Pagamento: {data.paymentMethod}</Text>
     </Container>
   );

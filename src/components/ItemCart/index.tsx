@@ -45,7 +45,12 @@ export function ItemCart({
         <Quantity>
           {quantity} {measurement}
         </Quantity>
-        <Price>{price}</Price>
+        <Price>
+          {new Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }).format(+price)}
+        </Price>
       </Container>
     </Swipeable>
   );

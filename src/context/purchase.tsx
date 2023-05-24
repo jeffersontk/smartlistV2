@@ -1,18 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
+import { useQuery, useRealm } from "../libs/realm";
+import { ProductInCart } from "../libs/realm/schema/ProductInCart";
+import { useUser } from "@realm/react";
 
 interface Purchase {
   marketName: string;
   typeList: string;
-}
-
-interface Cart {
-  id: number;
-  productName: string;
-  category: string;
-  price: string;
-  quantity: string;
-  measurement: string;
 }
 
 interface ProductIHaveAtHome {
@@ -43,9 +37,9 @@ interface PurchaseContextType {
     measurement: string,
     status: string
   ) => void;
-  cart: Cart[];
+  cart: ProductInCart[];
   iHaveAtHomeList: ProductIHaveAtHome[];
-  removeFromCart: (productId: number) => void;
+  removeFromCart: (productId: string) => void;
   removeFromIHaveAtHomeList: (productId: string) => void;
   resetCart: () => void;
   resetIHaveAtHomeList: () => void;
@@ -79,7 +73,7 @@ const PurchaseContext = createContext<PurchaseContextType>({
   cart: [],
   iHaveAtHomeList: [],
   totalPrice: 0,
-  removeFromCart: (productId: number) => {},
+  removeFromCart: (productId: string) => {},
   removeFromIHaveAtHomeList: (productId: string) => {},
   resetCart: () => {},
   resetIHaveAtHomeList: () => {},
@@ -89,17 +83,20 @@ export const usePurchase = () => useContext(PurchaseContext);
 
 function PurchaseProvider({ children }: PurchaseProviderProps) {
   const [purchase, setPurchase] = useState<Purchase>({} as Purchase);
-  const [cart, setCart] = useState<Cart[]>([]);
+  const [cart, setCart] = useState<ProductInCart[]>([]);
   const [iHaveAtHomeList, setIHaveAtHomeList] = useState<ProductIHaveAtHome[]>(
     []
   );
-
   const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  const realm = useRealm();
+  const productsInCart = useQuery(ProductInCart);
+  const user = useUser();
 
   useEffect(() => {
     const calculateTotalPrice = () => {
       let total = 0;
-      for (const product of cart) {
+      for (const product of productsInCart) {
         total += parseFloat(product.price) * parseInt(product.quantity);
       }
       setTotalPrice(total);
@@ -122,29 +119,48 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     quantity: string,
     measurement: string
   ) {
-    const isProductInCart = cart.some(
-      (item) => item.productName === productName
+    const isProductInCart = productsInCart.some(
+      (item) => item.name === productName
     );
 
     if (isProductInCart) {
       Alert.alert("Aviso", "Produto já esta no carrinho!");
       return;
     }
-    const newProduct: Cart = {
-      id: new Date().getTime(),
-      productName,
+
+    const newProduct: ProductInCart = {
+      name: productName,
       category,
       price,
       quantity,
       measurement,
+      _id: "",
+      user_id: "",
+      created_at: new Date(),
+      updated_at: new Date(),
     };
+
+    realm.write(() => {
+      realm.create(
+        "ProductInCart",
+        ProductInCart.generate({
+          category,
+          measurement,
+          name: productName,
+          price,
+          quantity,
+          user_id: user!.id,
+        })
+      );
+    });
 
     setCart([...cart, newProduct]);
   }
 
-  function removeFromCart(productId: number) {
-    const updatedCart = cart.filter((item) => item.id !== productId);
-    setCart(updatedCart);
+  function removeFromCart(product: ProductInCart) {
+    realm.write(() => {
+      realm.delete(product);
+    });
   }
   function removeFromIHaveAtHomeList(productId: string) {
     const updatedCart = iHaveAtHomeList.filter((item) => item.id !== productId);
@@ -180,7 +196,7 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
   }
 
   const resetCart = () => {
-    setCart([]);
+    /*  setCart([]); */
   };
 
   const resetIHaveAtHomeList = () => {

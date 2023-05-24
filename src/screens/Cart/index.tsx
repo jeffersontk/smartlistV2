@@ -14,24 +14,32 @@ import { Button } from "../../components/Button";
 import { usePurchase } from "../../context/purchase";
 import { FlatList } from "react-native";
 import { ItemCart } from "../../components/ItemCart";
+import { useNavigation } from "@react-navigation/native";
+import { useQuery } from "../../libs/realm";
+import { ProductInCart } from "../../libs/realm/schema/ProductInCart";
 
 export function Cart() {
+  const { navigate } = useNavigation();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchProduct, setSearchProduct] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
-  const { totalPrice, cart, removeFromCart, purchase } = usePurchase();
+  const [filteredProducts, setFilteredProducts] = useState<ProductInCart[]>([]);
+  const { totalPrice, removeFromCart, purchase } = usePurchase();
   const swipeableRef = useRef<any>(null);
+
+  const cart = useQuery(ProductInCart);
 
   function handleSearchOpen() {
     setSearchOpen(!searchOpen);
   }
 
+  function handleToCheckout() {
+    navigate("checkout");
+  }
+
   useEffect(() => {
     if (searchProduct.length > 0) {
       const filtered = cart.filter((product: any) =>
-        product.productName
-          .toLowerCase()
-          .includes(searchProduct.toLocaleLowerCase())
+        product.name.toLowerCase().includes(searchProduct.toLocaleLowerCase())
       );
 
       setFilteredProducts(filtered);
@@ -48,7 +56,12 @@ export function Cart() {
       <Content>
         <TotalInCart>
           <Title>Total no carrinho</Title>
-          <TotalPrice>{totalPrice}</TotalPrice>
+          <TotalPrice>
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(totalPrice)}
+          </TotalPrice>
         </TotalInCart>
 
         <Box>
@@ -60,7 +73,7 @@ export function Cart() {
               <ItemCart
                 measurement={item.measurement}
                 price={item.price}
-                productName={item.productName}
+                productName={item.name}
                 quantity={item.quantity}
                 swipeableRef={swipeableRef}
                 onRemove={() => removeFromCart(item.id)}
@@ -75,7 +88,9 @@ export function Cart() {
             onChangeValue={setSearchProduct}
           />
         </Box>
-        {!searchOpen && <Button title="Finalizar compras" />}
+        {!searchOpen && (
+          <Button title="Finalizar compras" onPress={handleToCheckout} />
+        )}
       </Content>
     </Container>
   );

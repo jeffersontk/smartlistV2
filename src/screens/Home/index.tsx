@@ -19,11 +19,17 @@ import { useTheme } from "styled-components";
 import { Button } from "../../components/Button";
 import { fakeHistoric } from "../../data/fakeHistoric";
 import { usePurchase } from "../../context/purchase";
+import { Purchase } from "../../libs/realm/schema/Purchase";
 
 export function Home() {
   const { navigate } = useNavigation();
   const { purchase } = usePurchase();
   const { COLORS } = useTheme();
+
+  const historicPurchase = useQuery(Purchase);
+  const filteredHistoricPurchase = historicPurchase
+    .sorted([["_id", true]])
+    .slice(0, 10);
 
   function handleStartPurchase() {
     navigate("startpurchase");
@@ -36,7 +42,7 @@ export function Home() {
     navigate("mylist");
   }
 
-  function handleDetailsPurchase(item: HistoricCardProps) {
+  function handleDetailsPurchase(item: Purchase) {
     navigate("purchasedetails", item);
   }
 
@@ -61,8 +67,8 @@ export function Home() {
           </NavigationButton>
           <Title>Histórico</Title>
           <FlatList
-            data={fakeHistoric}
-            keyExtractor={(item) => item!.id}
+            data={filteredHistoricPurchase}
+            keyExtractor={(item) => String(item._id)}
             renderItem={({ item }) => (
               <HistoricCard
                 data={item}

@@ -1,12 +1,25 @@
 import { Realm } from "@realm/react";
-import { Product } from "./Product";
+import { ProductInCart } from "./ProductInCart";
 
 type GenerateProps = {
   user_id: string;
   marketName: string;
   paymentMethod: string;
   purchaseValue: string;
-  products: Product[];
+  cart: ProductInCart[];
+};
+
+export const CartSchema = {
+  name: "Cart",
+  properties: {
+    id: "int",
+    productName: "string",
+    category: "string",
+    price: "string",
+    quantity: "string",
+    measurement: "string",
+  },
+  primaryKey: "id",
 };
 
 export class Purchase extends Realm.Object<Purchase> {
@@ -15,7 +28,7 @@ export class Purchase extends Realm.Object<Purchase> {
   marketName!: string;
   paymentMethod!: string;
   purchaseValue!: string;
-  products!: Product[];
+  cart!: Realm.List<ProductInCart>;
   created_at!: Date;
   updated_at!: Date;
 
@@ -23,7 +36,7 @@ export class Purchase extends Realm.Object<Purchase> {
     marketName,
     user_id,
     paymentMethod,
-    products,
+    cart,
     purchaseValue,
   }: GenerateProps) {
     return {
@@ -32,7 +45,7 @@ export class Purchase extends Realm.Object<Purchase> {
       marketName,
       paymentMethod,
       purchaseValue,
-      products,
+      cart,
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -46,7 +59,10 @@ export class Purchase extends Realm.Object<Purchase> {
       marketName: "string",
       paymentMethod: "string",
       purchaseValue: "string",
-      products: "data",
+      cart: {
+        type: "list",
+        objectType: "ProductInCart",
+      },
       created_at: "date",
       updated_at: "date",
     },

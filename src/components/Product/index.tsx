@@ -102,7 +102,15 @@ export function Product({
           <Label isDisabled={isCheckAtHome && status !== "iNeed"}>
             {title}
           </Label>
-          {price && <Text>Preço unitário: R$ {+price}</Text>}
+          {price && (
+            <Text>
+              Preço unitário:
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(+price)}
+            </Text>
+          )}
           {quantityAtHome && (
             <Text>
               Quantidade em casa: {quantityAtHome} {measurement}
