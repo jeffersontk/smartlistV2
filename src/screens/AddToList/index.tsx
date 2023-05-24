@@ -14,7 +14,10 @@ export function AddToList() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const realm = useRealm();
+
   const products = useQuery(Product);
+  const filteredProducts = products.sorted([["_id", true]]).slice(0, 10);
+
   const user = useUser();
 
   const nameRef = useRef<TextInput>(null);
@@ -74,7 +77,7 @@ export function AddToList() {
         <Title>Recém-adicionados</Title>
 
         <FlatList
-          data={products}
+          data={filteredProducts}
           keyExtractor={(item) => String(item!._id)}
           renderItem={({ item }) => (
             <ItemList

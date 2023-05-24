@@ -165,7 +165,7 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     );
 
     if (isProductInCart) {
-      console.log("Produto já está no carrinho.");
+      Alert.alert("Aviso", "Produto já esta no carrinho!");
       return;
     }
     const newProduct = {
