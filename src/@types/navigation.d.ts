@@ -1,3 +1,4 @@
+import { Realm } from "@realm/react";
 import { Purchase } from "../libs/realm/schema/Purchase";
 
 export declare global {
@@ -22,9 +23,10 @@ export declare global {
       addtocart: {
         productName: string;
         category: string;
+        id: Realm.BSON.UUID;
       };
       ihaveathome: {
-        id: string;
+        id: Realm.BSON.UUID;
         productName: string;
         category: string;
       };

@@ -6,7 +6,7 @@ export const Container = styled.View`
   padding: 32px;
 `;
 
-export const Content = styled.View`
+export const Content = styled.FlatList`
   flex: 1;
   gap: 16px;
 `;

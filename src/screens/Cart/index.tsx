@@ -11,7 +11,7 @@ import {
 } from "./styles";
 import { SearchButton } from "../../components/SearchButton";
 import { Button } from "../../components/Button";
-import { usePurchase } from "../../context/purchase";
+import { CartProps, usePurchase } from "../../context/purchase";
 import { FlatList } from "react-native";
 import { ItemCart } from "../../components/ItemCart";
 import { useNavigation } from "@react-navigation/native";
@@ -22,11 +22,11 @@ export function Cart() {
   const { navigate } = useNavigation();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchProduct, setSearchProduct] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState<ProductInCart[]>([]);
-  const { totalPrice, removeFromCart, purchase } = usePurchase();
+  const [filteredProducts, setFilteredProducts] = useState<CartProps[]>([]);
+  const { totalPrice, removeFromCart, purchase, cart } = usePurchase();
   const swipeableRef = useRef<any>(null);
 
-  const cart = useQuery(ProductInCart);
+  /*   const cart = useQuery(ProductInCart); */
 
   function handleSearchOpen() {
     setSearchOpen(!searchOpen);
@@ -76,7 +76,7 @@ export function Cart() {
                 productName={item.name}
                 quantity={item.quantity}
                 swipeableRef={swipeableRef}
-                onRemove={() => removeFromCart(item.id)}
+                onRemove={() => removeFromCart(item)}
               />
             )}
           />

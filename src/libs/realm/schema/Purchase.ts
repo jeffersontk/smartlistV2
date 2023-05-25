@@ -1,25 +1,25 @@
 import { Realm } from "@realm/react";
-import { ProductInCart } from "./ProductInCart";
+import { CartProps } from "../../../context/purchase";
 
 type GenerateProps = {
   user_id: string;
   marketName: string;
   paymentMethod: string;
   purchaseValue: string;
-  cart: ProductInCart[];
+  cart: CartProps[];
 };
 
 export const CartSchema = {
   name: "Cart",
+  primaryKey: "_id",
   properties: {
-    id: "int",
-    productName: "string",
+    _id: "uuid",
+    name: "string",
     category: "string",
     price: "string",
     quantity: "string",
     measurement: "string",
   },
-  primaryKey: "id",
 };
 
 export class Purchase extends Realm.Object<Purchase> {
@@ -28,7 +28,7 @@ export class Purchase extends Realm.Object<Purchase> {
   marketName!: string;
   paymentMethod!: string;
   purchaseValue!: string;
-  cart!: Realm.List<ProductInCart>;
+  cart!: Realm.List<CartProps>;
   created_at!: Date;
   updated_at!: Date;
 
@@ -39,13 +39,21 @@ export class Purchase extends Realm.Object<Purchase> {
     cart,
     purchaseValue,
   }: GenerateProps) {
+    const newCart = cart.map((cartItem) => {
+      const { _id, ...rest } = cartItem;
+      return {
+        _id: new Realm.BSON.UUID(),
+        ...rest,
+      };
+    });
+
     return {
       _id: new Realm.BSON.UUID(),
       user_id,
       marketName,
       paymentMethod,
       purchaseValue,
-      cart,
+      cart: newCart,
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -61,7 +69,7 @@ export class Purchase extends Realm.Object<Purchase> {
       purchaseValue: "string",
       cart: {
         type: "list",
-        objectType: "ProductInCart",
+        objectType: "Cart",
       },
       created_at: "date",
       updated_at: "date",

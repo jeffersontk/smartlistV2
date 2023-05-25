@@ -11,7 +11,14 @@ import { useNavigation } from "@react-navigation/native";
 
 export function Checkout() {
   const { navigate } = useNavigation();
-  const { purchase, totalPrice, cart } = usePurchase();
+  const {
+    purchase,
+    totalPrice,
+    cart,
+    resetCart,
+    resetIHaveAtHomeList,
+    resetPurchase,
+  } = usePurchase();
   const [payment, setPayment] = useState("");
   const user = useUser();
 
@@ -37,6 +44,9 @@ export function Checkout() {
           })
         );
       });
+      resetPurchase();
+      resetCart();
+      resetIHaveAtHomeList();
       navigate("home");
     } catch (error) {
       Alert.alert("Error", "Não foi possível registrar a sua compra.");

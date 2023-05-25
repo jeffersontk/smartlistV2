@@ -11,11 +11,12 @@ import { usePurchase } from "../../context/purchase";
 type routeParamsProps = {
   productName: string;
   category: keyof typeof Category;
+  id: string;
 };
 
 export function AddToCart() {
   const route = useRoute();
-  const { productName, category } = route.params as routeParamsProps;
+  const { productName, category, id } = route.params as routeParamsProps;
   const { goBack } = useNavigation();
   const { addToCart } = usePurchase();
 
@@ -24,7 +25,7 @@ export function AddToCart() {
   const [measurement, setMeasurement] = useState("");
 
   function handleAddToCart() {
-    addToCart(productName, category, price, quantity, measurement);
+    addToCart(id, productName, category, price, quantity, measurement);
     goBack();
   }
 

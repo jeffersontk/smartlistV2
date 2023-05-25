@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Center,
@@ -20,8 +20,9 @@ import { usePurchase } from "../../context/purchase";
 import { ListDashes } from "phosphor-react-native";
 import { useTheme } from "styled-components";
 import { Button } from "../../components/Button";
-import { useQuery, useRealm } from "../../libs/realm";
+import { useQuery } from "../../libs/realm";
 import { Alert, TouchableOpacity } from "react-native";
+import { Realm } from "@realm/react";
 
 type routeParamsProps = {
   category: string;
@@ -54,14 +55,15 @@ export function Purchase() {
     setSearchOpen(!searchOpen);
   }
 
-  function handleAddToCart(productName: string) {
+  function handleAddToCart(productName: string, id: Realm.BSON.UUID) {
     navigate("addtocart", {
       category,
       productName,
+      id,
     });
   }
 
-  function handleIHaveAtHome(productName: string, id: string) {
+  function handleIHaveAtHome(productName: string, id: Realm.BSON.UUID) {
     navigate("ihaveathome", {
       id,
       category,
@@ -128,7 +130,7 @@ export function Purchase() {
 
   function handleRemoveIHaveAtHome(id: string) {
     const update = listProducts.map((item: any) => {
-      if (purchase.typeList === "myList" ? String(item._id) : item.id === id) {
+      if (purchase.typeList === "myList" ? item._id : item.id === id) {
         const updatedItem = JSON.parse(JSON.stringify(item));
         updatedItem.quantity = "";
         updatedItem.measurement = "";
@@ -154,15 +156,13 @@ export function Purchase() {
   useEffect(() => {
     if (listProducts) {
       const updateList = listProducts.map((product: any, index: number) => {
-        const isProductInCart = cart.some(
-          (item) => item.productName === product.name
-        );
+        const isProductInCart = cart.some((item) => item.name === product.name);
         const isProductIHaveAtHome = iHaveAtHomeList.some(
-          (item) => item.productName === product.name
+          (item) => item.name === product.name
         );
 
         const filt = iHaveAtHomeList.filter(
-          (item) => item.productName === product.name
+          (item) => item.name === product.name
         );
         if (index >= 0 && index < filt.length) {
           product.isCheck = isProductInCart;
@@ -222,13 +222,18 @@ export function Purchase() {
             <List
               data={productList}
               keyExtractor={(item: any) =>
-                purchase.typeList === "myList" ? String(item._id) : item.id
+                purchase.typeList === "myList" ? item._id : item.id
               }
               renderItem={({ item }: any) => {
                 return (
                   <Product
                     title={item.name}
-                    onPress={() => handleAddToCart(item.name)}
+                    onPress={() =>
+                      handleAddToCart(
+                        item.name,
+                        purchase.typeList === "myList" ? item._id : item.id
+                      )
+                    }
                     isCheck={item.isCheck}
                     isCheckAtHome={item.isCheckAtHome}
                     quantityAtHome={item.quantity}
@@ -237,16 +242,12 @@ export function Purchase() {
                     goToIHaveAtHome={() => {
                       handleIHaveAtHome(
                         item.name,
-                        purchase.typeList === "myList"
-                          ? String(item._id)
-                          : item.id
+                        purchase.typeList === "myList" ? item._id : item.id
                       );
                     }}
                     onRemoveToIHaveAtHome={() => {
                       handleRemoveIHaveAtHome(
-                        purchase.typeList === "myList"
-                          ? String(item._id)
-                          : item.id
+                        purchase.typeList === "myList" ? item._id : item.id
                       );
                     }}
                   />

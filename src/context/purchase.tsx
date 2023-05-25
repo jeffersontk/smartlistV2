@@ -9,9 +9,19 @@ interface Purchase {
   typeList: string;
 }
 
+export interface CartProps {
+  _id: Realm.BSON.UUID;
+  name: string;
+  category: string;
+  price: string;
+  quantity: string;
+  measurement: string;
+  user_id: string;
+}
+
 interface ProductIHaveAtHome {
   id: string;
-  productName: string;
+  name: string;
   category: string;
   quantity: string;
   measurement: string;
@@ -23,7 +33,8 @@ interface PurchaseContextType {
   totalPrice: number;
   startPurchase: (marketName: string, typeList: string) => void;
   addToCart: (
-    productName: string,
+    id: Realm.BSON.UUID,
+    name: string,
     category: string,
     price: string,
     quantity: string,
@@ -31,18 +42,19 @@ interface PurchaseContextType {
   ) => void;
   addToIHaveAtHomeList: (
     id: string,
-    productName: string,
+    name: string,
     category: string,
     quantity: string,
     measurement: string,
     status: string
   ) => void;
-  cart: ProductInCart[];
+  cart: CartProps[];
   iHaveAtHomeList: ProductIHaveAtHome[];
-  removeFromCart: (productId: string) => void;
+  removeFromCart: (product: CartProps) => void;
   removeFromIHaveAtHomeList: (productId: string) => void;
   resetCart: () => void;
   resetIHaveAtHomeList: () => void;
+  resetPurchase: () => void;
 }
 
 interface PurchaseProviderProps {
@@ -56,7 +68,8 @@ const PurchaseContext = createContext<PurchaseContextType>({
     typeList: "myList",
   },
   addToCart: (
-    productName: string,
+    id: Realm.BSON.UUID,
+    name: string,
     category: string,
     price: string,
     quantity: string,
@@ -64,7 +77,7 @@ const PurchaseContext = createContext<PurchaseContextType>({
   ) => {},
   addToIHaveAtHomeList: (
     id: string,
-    productName: string,
+    name: string,
     category: string,
     quantity: string,
     measurement: string,
@@ -73,17 +86,18 @@ const PurchaseContext = createContext<PurchaseContextType>({
   cart: [],
   iHaveAtHomeList: [],
   totalPrice: 0,
-  removeFromCart: (productId: string) => {},
+  removeFromCart: (product: CartProps) => {},
   removeFromIHaveAtHomeList: (productId: string) => {},
   resetCart: () => {},
   resetIHaveAtHomeList: () => {},
+  resetPurchase: () => {},
 });
 
 export const usePurchase = () => useContext(PurchaseContext);
 
 function PurchaseProvider({ children }: PurchaseProviderProps) {
   const [purchase, setPurchase] = useState<Purchase>({} as Purchase);
-  const [cart, setCart] = useState<ProductInCart[]>([]);
+  const [cart, setCart] = useState<CartProps[]>([]);
   const [iHaveAtHomeList, setIHaveAtHomeList] = useState<ProductIHaveAtHome[]>(
     []
   );
@@ -96,7 +110,7 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
   useEffect(() => {
     const calculateTotalPrice = () => {
       let total = 0;
-      for (const product of productsInCart) {
+      for (const product of cart) {
         total += parseFloat(product.price) * parseInt(product.quantity);
       }
       setTotalPrice(total);
@@ -112,55 +126,56 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     });
   }
 
+  function resetPurchase() {
+    setPurchase({} as Purchase);
+  }
+
   function addToCart(
-    productName: string,
+    id: Realm.BSON.UUID,
+    name: string,
     category: string,
     price: string,
     quantity: string,
     measurement: string
   ) {
-    const isProductInCart = productsInCart.some(
-      (item) => item.name === productName
-    );
+    const isProductInCart = cart.some((item) => item.name === name);
 
     if (isProductInCart) {
       Alert.alert("Aviso", "Produto já esta no carrinho!");
       return;
     }
-
-    const newProduct: ProductInCart = {
-      name: productName,
+    const newProduct = {
+      _id: id,
+      name,
       category,
       price,
       quantity,
       measurement,
-      _id: "",
-      user_id: "",
-      created_at: new Date(),
-      updated_at: new Date(),
+      user_id: user!.id,
     };
 
-    realm.write(() => {
+    setCart([...cart, newProduct]);
+    /* realm.write(() => {
       realm.create(
         "ProductInCart",
         ProductInCart.generate({
           category,
           measurement,
-          name: productName,
+          name,
           price,
           quantity,
           user_id: user!.id,
         })
       );
-    });
-
-    setCart([...cart, newProduct]);
+    }); */
   }
 
-  function removeFromCart(product: ProductInCart) {
-    realm.write(() => {
+  function removeFromCart(product: CartProps) {
+    const updatedCart = cart.filter((item) => item._id !== product._id);
+    setCart(updatedCart);
+    /*   realm.write(() => {
       realm.delete(product);
-    });
+    }); */
   }
   function removeFromIHaveAtHomeList(productId: string) {
     const updatedCart = iHaveAtHomeList.filter((item) => item.id !== productId);
@@ -170,15 +185,13 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
 
   function addToIHaveAtHomeList(
     id: string,
-    productName: string,
+    name: string,
     category: string,
     quantity: string,
     measurement: string,
     status: string
   ) {
-    const isProductInCart = iHaveAtHomeList.some(
-      (item) => item.productName === productName
-    );
+    const isProductInCart = iHaveAtHomeList.some((item) => item.name === name);
 
     if (isProductInCart) {
       Alert.alert("Aviso", "Produto já esta no carrinho!");
@@ -186,17 +199,18 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     }
     const newProduct = {
       id,
-      productName,
+      name,
       category,
       quantity,
       measurement,
       status,
     };
+
     setIHaveAtHomeList([...iHaveAtHomeList, newProduct]);
   }
 
   const resetCart = () => {
-    /*  setCart([]); */
+    setCart([]);
   };
 
   const resetIHaveAtHomeList = () => {
@@ -215,6 +229,7 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     resetCart,
     resetIHaveAtHomeList,
     removeFromIHaveAtHomeList,
+    resetPurchase,
   };
 
   return (

@@ -11,6 +11,7 @@ import {
 } from "./styles";
 import { useTheme } from "styled-components";
 import { Purchase } from "../../libs/realm/schema/Purchase";
+import dayjs from "dayjs";
 
 export type HistoricCardProps = {
   id: string;
@@ -27,8 +28,8 @@ type Props = TouchableOpacityProps & {
 };
 
 export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
-  console.log("data", data);
   const { COLORS } = useTheme();
+  const { cart, created_at, paymentMethod, marketName, purchaseValue } = data;
   const selectCard = { borderColor: COLORS.BRAND_MID, borderWidth: 2 };
   const [isSelected, setIsSelected] = useState(false);
 
@@ -37,6 +38,7 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
       setIsSelected(!isSelected);
     }
   }
+  const create = dayjs(created_at).format("DD/MM/YYYY");
 
   return (
     <Container
@@ -45,10 +47,10 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
       {...rest}
     >
       <Header>
-        <MarketName>{data.marketName}</MarketName>
+        <MarketName>{marketName}</MarketName>
         <ContentDate>
           <Clock size={16} color={COLORS.GRAY_400} />
-          {/*   <PurchaseDay>{data.purchaseDay}</PurchaseDay> */}
+          <PurchaseDay>{create}</PurchaseDay>
         </ContentDate>
       </Header>
       <Text>
@@ -56,10 +58,10 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
         {new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
-        }).format(+data.purchaseValue)}
+        }).format(+purchaseValue)}
       </Text>
-      {/*       <Text>Quantidade de items: {data.quantityItems}</Text> */}
-      <Text>Pagamento: {data.paymentMethod}</Text>
+      <Text>Quantidade de items: {cart.length.toString()}</Text>
+      <Text>Pagamento: {paymentMethod}</Text>
     </Container>
   );
 }
