@@ -12,12 +12,7 @@ const CustomInput = forwardRef<TextInput, Props>(({ label, ...rest }, ref) => {
   return (
     <Container>
       <Label>{label}</Label>
-      <Input
-        ref={ref}
-        autoCapitalize="characters"
-        placeholderTextColor={COLORS.GRAY_400}
-        {...rest}
-      />
+      <Input ref={ref} placeholderTextColor={COLORS.GRAY_400} {...rest} />
     </Container>
   );
 });

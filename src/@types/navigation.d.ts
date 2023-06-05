@@ -30,7 +30,7 @@ export declare global {
         productName: string;
         category: string;
       };
-      purchasedetails: Purchase;
+      purchasedetails: HistoricCardProps;
       selectpurchases: undefined;
       purchasingAnalysis: undefined;
       checkout: undefined;

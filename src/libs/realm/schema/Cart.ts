@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 
-type GenerateProps = {
+type GenerateCartProps = {
   user_id: string;
   name: string;
   category: string;
@@ -9,8 +9,7 @@ type GenerateProps = {
   measurement: string;
 };
 
-export class ProductInCart extends Realm.Object<ProductInCart> {
-  _id!: string;
+export class Cart extends Realm.Object<Cart> {
   user_id!: string;
   name!: string;
   category!: string;
@@ -21,13 +20,13 @@ export class ProductInCart extends Realm.Object<ProductInCart> {
   updated_at!: Date;
 
   static generate({
-    user_id,
-    name,
     category,
+    measurement,
+    name,
     price,
     quantity,
-    measurement,
-  }: GenerateProps) {
+    user_id,
+  }: GenerateCartProps) {
     return {
       _id: new Realm.BSON.UUID(),
       user_id,
@@ -42,22 +41,16 @@ export class ProductInCart extends Realm.Object<ProductInCart> {
   }
 
   static schema = {
-    name: "ProductInCart",
+    name: "Cart",
     primaryKey: "_id",
-
     properties: {
       _id: "uuid",
-      user_id: {
-        type: "string",
-        indexed: true,
-      },
+      user_id: "string",
       name: "string",
       category: "string",
       price: "string",
       quantity: "string",
       measurement: "string",
-      created_at: "date",
-      updated_at: "date",
     },
   };
 }

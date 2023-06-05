@@ -1,7 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { useQuery, useRealm } from "../libs/realm";
-import { ProductInCart } from "../libs/realm/schema/ProductInCart";
 import { useUser } from "@realm/react";
 
 interface Purchase {
@@ -31,6 +29,7 @@ interface ProductIHaveAtHome {
 interface PurchaseContextType {
   purchase: Purchase;
   totalPrice: number;
+  amountProducts: number;
   startPurchase: (marketName: string, typeList: string) => void;
   addToCart: (
     id: Realm.BSON.UUID,
@@ -86,6 +85,7 @@ const PurchaseContext = createContext<PurchaseContextType>({
   cart: [],
   iHaveAtHomeList: [],
   totalPrice: 0,
+  amountProducts: 0,
   removeFromCart: (product: CartProps) => {},
   removeFromIHaveAtHomeList: (productId: string) => {},
   resetCart: () => {},
@@ -102,21 +102,27 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     []
   );
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  const realm = useRealm();
-  const productsInCart = useQuery(ProductInCart);
+  const [amountProducts, setAmountProducts] = useState(0);
   const user = useUser();
 
   useEffect(() => {
-    const calculateTotalPrice = () => {
-      let total = 0;
+    const calculateTotals = () => {
+      let totalPrice = 0;
+      let totalProducts = 0;
+
       for (const product of cart) {
-        total += parseFloat(product.price) * parseInt(product.quantity);
+        const productPrice = parseFloat(product.price);
+        const productQuantity = parseInt(product.quantity);
+
+        totalPrice += productPrice * productQuantity;
+        totalProducts += productQuantity;
       }
-      setTotalPrice(total);
+
+      setTotalPrice(totalPrice);
+      setAmountProducts(totalProducts);
     };
 
-    calculateTotalPrice();
+    calculateTotals();
   }, [cart]);
 
   function startPurchase(marketName: string, typeList: string) {
@@ -155,19 +161,6 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     };
 
     setCart([...cart, newProduct]);
-    /* realm.write(() => {
-      realm.create(
-        "ProductInCart",
-        ProductInCart.generate({
-          category,
-          measurement,
-          name,
-          price,
-          quantity,
-          user_id: user!.id,
-        })
-      );
-    }); */
   }
 
   function removeFromCart(product: CartProps) {
@@ -221,6 +214,7 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     purchase,
     cart,
     totalPrice,
+    amountProducts,
     iHaveAtHomeList,
     startPurchase,
     addToCart,

@@ -15,7 +15,7 @@ type Props = {
 };
 
 export function ItemCart({
-  measurement,
+  measurement = "unidade",
   price,
   productName,
   quantity,
@@ -38,10 +38,13 @@ export function ItemCart({
       />
     );
   };
+
   return (
     <Swipeable ref={swipeableRef} renderLeftActions={LeftSwipeActions}>
       <Container>
-        <Name>{productName}</Name>
+        <Name numberOfLines={1} ellipsizeMode="tail">
+          {productName}
+        </Name>
         <Quantity>
           {quantity} {measurement}
         </Quantity>

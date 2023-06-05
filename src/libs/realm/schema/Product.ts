@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 
-type GenerateProps = {
+export type GenerateProductProps = {
   user_id: string;
   name: string;
   category: string;
@@ -14,7 +14,7 @@ export class Product extends Realm.Object<Product> {
   created_at!: Date;
   updated_at!: Date;
 
-  static generate({ user_id, name, category }: GenerateProps) {
+  static generate({ user_id, name, category }: GenerateProductProps) {
     return {
       _id: new Realm.BSON.UUID(),
       user_id,

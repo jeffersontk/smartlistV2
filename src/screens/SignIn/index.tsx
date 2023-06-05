@@ -4,7 +4,7 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { Realm, useApp } from "@realm/react";
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "@env";
-import { Container, Slogan, Title } from "./styles";
+import { Container } from "./styles";
 
 import backgroundImg from "../../assets/background.png";
 import { Button } from "../../components/Button";

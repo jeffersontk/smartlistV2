@@ -46,12 +46,12 @@ export function StartPurchase() {
           onSelect={handleOptionSelect}
           value="myList"
         />
-        <RadioButton
+        {/*         <RadioButton
           label="Usar lista sugerida"
           selected={typeList === "suggestedList"}
           onSelect={handleOptionSelect}
           value="suggestedList"
-        />
+        /> */}
 
         <Button title="Começar" onPress={handlePurchase} />
       </Content>

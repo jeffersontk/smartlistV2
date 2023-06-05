@@ -10,26 +10,34 @@ import {
   Text,
 } from "./styles";
 import { useTheme } from "styled-components";
-import { Purchase } from "../../libs/realm/schema/Purchase";
 import dayjs from "dayjs";
+import { Cart } from "../../libs/realm/schema/Cart";
 
 export type HistoricCardProps = {
-  id: string;
+  id: any;
   marketName: string;
-  purchaseDay: string;
+  purchaseDay: Date;
   purchaseValue: string;
   quantityItems: string;
   paymentMethod: string;
+  cart: Realm.List<Cart>;
+  isSync: boolean;
 };
 
 type Props = TouchableOpacityProps & {
-  data: Purchase;
+  data: HistoricCardProps;
   enableSelect?: boolean;
 };
 
 export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
   const { COLORS } = useTheme();
-  const { cart, created_at, paymentMethod, marketName, purchaseValue } = data;
+  const {
+    purchaseDay,
+    paymentMethod,
+    marketName,
+    purchaseValue,
+    quantityItems,
+  } = data;
   const selectCard = { borderColor: COLORS.BRAND_MID, borderWidth: 2 };
   const [isSelected, setIsSelected] = useState(false);
 
@@ -38,7 +46,7 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
       setIsSelected(!isSelected);
     }
   }
-  const create = dayjs(created_at).format("DD/MM/YYYY");
+  const create = dayjs(purchaseDay).format("DD/MM/YYYY");
 
   return (
     <Container
@@ -48,10 +56,11 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
     >
       <Header>
         <MarketName>{marketName}</MarketName>
-        <ContentDate>
-          <Clock size={16} color={COLORS.GRAY_400} />
-          <PurchaseDay>{create}</PurchaseDay>
-        </ContentDate>
+        {data.isSync ? (
+          <Check size={24} color={COLORS.BRAND_LIGHT} />
+        ) : (
+          <Clock size={24} color={COLORS.GRAY_400} />
+        )}
       </Header>
       <Text>
         Valor da compra:
@@ -60,8 +69,9 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
           currency: "BRL",
         }).format(+purchaseValue)}
       </Text>
-      <Text>Quantidade de items: {cart.length.toString()}</Text>
+      <Text>Quantidade de items: {quantityItems}</Text>
       <Text>Pagamento: {paymentMethod}</Text>
+      <Text>Data da compra: {create}</Text>
     </Container>
   );
 }

@@ -10,6 +10,7 @@ import { Category } from "../../utils/enumCategory";
 import { Product } from "../../libs/realm/schema/Product";
 import { useQuery, useRealm } from "../../libs/realm";
 import { SearchButton } from "../../components/SearchButton";
+import { Label } from "../Home/styles";
 
 export function MyList() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -63,6 +64,7 @@ export function MyList() {
             />
           )}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<Label>Lista vazia</Label>}
         />
         <Footer>
           <SearchButton

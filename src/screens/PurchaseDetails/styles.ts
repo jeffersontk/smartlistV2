@@ -15,6 +15,7 @@ export const ItemCart = styled.View`
   width: 100%;
   border-radius: 6px;
   padding: 16px;
+  margin-bottom: 16px;
 
   background-color: ${({ theme }) => theme.COLORS.GRAY_700};
   flex-direction: row;
@@ -26,6 +27,7 @@ export const Name = styled.Text`
   color: ${({ theme }) => theme.COLORS.GRAY_200};
   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
+  width: 50%;
 `;
 export const Quantity = styled.Text`
   color: ${({ theme }) => theme.COLORS.GRAY_200};

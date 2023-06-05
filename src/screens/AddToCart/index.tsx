@@ -7,11 +7,12 @@ import { CustomInput } from "../../components/CustomInput";
 import { Button } from "../../components/Button";
 import { SelectWithInput } from "../../components/SelectWithInput";
 import { usePurchase } from "../../context/purchase";
+import { Realm } from "@realm/react";
 
 type routeParamsProps = {
   productName: string;
   category: keyof typeof Category;
-  id: string;
+  id: Realm.BSON.UUID;
 };
 
 export function AddToCart() {
@@ -22,9 +23,10 @@ export function AddToCart() {
 
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("1");
-  const [measurement, setMeasurement] = useState("");
+  const [measurement, setMeasurement] = useState("unidade");
 
   function handleAddToCart() {
+    console.log("measurement", measurement);
     addToCart(id, productName, category, price, quantity, measurement);
     goBack();
   }

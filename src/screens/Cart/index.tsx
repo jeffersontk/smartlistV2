@@ -3,7 +3,6 @@ import {
   Box,
   Container,
   Content,
-  Row,
   Text,
   Title,
   TotalInCart,
@@ -15,8 +14,6 @@ import { CartProps, usePurchase } from "../../context/purchase";
 import { FlatList } from "react-native";
 import { ItemCart } from "../../components/ItemCart";
 import { useNavigation } from "@react-navigation/native";
-import { useQuery } from "../../libs/realm";
-import { ProductInCart } from "../../libs/realm/schema/ProductInCart";
 
 export function Cart() {
   const { navigate } = useNavigation();
@@ -25,8 +22,6 @@ export function Cart() {
   const [filteredProducts, setFilteredProducts] = useState<CartProps[]>([]);
   const { totalPrice, removeFromCart, purchase, cart } = usePurchase();
   const swipeableRef = useRef<any>(null);
-
-  /*   const cart = useQuery(ProductInCart); */
 
   function handleSearchOpen() {
     setSearchOpen(!searchOpen);
@@ -68,7 +63,7 @@ export function Cart() {
           <Text>Mercado {purchase.marketName}</Text>
           <FlatList
             data={productList}
-            keyExtractor={(item) => String(item.id)}
+            keyExtractor={(item) => String(item._id)}
             renderItem={({ item }) => (
               <ItemCart
                 measurement={item.measurement}

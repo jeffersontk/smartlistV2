@@ -30,7 +30,7 @@ type routeParamsProps = {
 
 export function Purchase() {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [listProducts, setListProducts] = useState<any>();
+  const [listProducts, setListProducts] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchProduct, setSearchProduct] = useState("");
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
@@ -108,6 +108,7 @@ export function Purchase() {
         .catch((error) => {
           console.error("deu chabu", error);
           setIsLoading(false);
+          setListProducts([]);
         });
     }
   }
@@ -119,12 +120,44 @@ export function Purchase() {
         category
       );
 
-      setListProducts(productsFilterByCategory);
+      CheckIsProductInCart(productsFilterByCategory);
 
       return products;
     } catch (error) {
       console.error("Error retrieving products:", error);
       return null;
+    }
+  }
+  function CheckIsProductInCart(list: any) {
+    if (cart.length > 0) {
+      const updateList = list.map((product: any, index: number) => {
+        const isProductInCart = cart.some((item) => item.name === product.name);
+        const isProductIHaveAtHome = iHaveAtHomeList.some(
+          (item) => item.name === product.name
+        );
+
+        const filt = iHaveAtHomeList.filter(
+          (item) => item.name === product.name
+        );
+        if (index >= 0 && index < filt.length) {
+          product.isCheck = isProductInCart;
+          product.isCheckAtHome = isProductIHaveAtHome;
+          product.quantity = filt[index].quantity ?? 0;
+          product.measurement = filt[index].measurement ?? "";
+          product.status = filt[index].status ?? "";
+
+          return product;
+        } else {
+          product.isCheck = isProductInCart;
+          product.isCheckAtHome = isProductIHaveAtHome;
+
+          return product;
+        }
+      });
+
+      setListProducts(updateList);
+    } else {
+      setListProducts(list);
     }
   }
 
@@ -151,38 +184,7 @@ export function Purchase() {
     } else {
       getCategoryByRealm();
     }
-  }, [purchase, category]);
-
-  useEffect(() => {
-    if (listProducts) {
-      const updateList = listProducts.map((product: any, index: number) => {
-        const isProductInCart = cart.some((item) => item.name === product.name);
-        const isProductIHaveAtHome = iHaveAtHomeList.some(
-          (item) => item.name === product.name
-        );
-
-        const filt = iHaveAtHomeList.filter(
-          (item) => item.name === product.name
-        );
-        if (index >= 0 && index < filt.length) {
-          product.isCheck = isProductInCart;
-          product.isCheckAtHome = isProductIHaveAtHome;
-          product.quantity = filt[index].quantity ?? 0;
-          product.measurement = filt[index].measurement ?? "";
-          product.status = filt[index].status ?? "";
-
-          return product;
-        } else {
-          product.isCheck = isProductInCart;
-          product.isCheckAtHome = isProductIHaveAtHome;
-
-          return product;
-        }
-      });
-
-      setListProducts(updateList);
-    }
-  }, [cart, iHaveAtHomeList]);
+  }, [purchase, category, cart]);
 
   useEffect(() => {
     if (searchProduct.length > 0) {

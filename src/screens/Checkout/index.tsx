@@ -15,6 +15,7 @@ export function Checkout() {
     purchase,
     totalPrice,
     cart,
+    amountProducts,
     resetCart,
     resetIHaveAtHomeList,
     resetPurchase,
@@ -41,6 +42,7 @@ export function Checkout() {
             cart: cart,
             purchaseValue: String(totalPrice),
             user_id: user!.id,
+            amountProducts: String(amountProducts),
           })
         );
       });
@@ -73,7 +75,7 @@ export function Checkout() {
           </Text>
         </Header>
         {payment && <Text>Pagamento: {payment}</Text>}
-        <Text>Produtos no carrinho: {cart.length}</Text>
+        <Text>Produtos no carrinho: {amountProducts}</Text>
       </Box>
       <Button title="Confirmar" onPress={handleCheckout} />
     </Container>
