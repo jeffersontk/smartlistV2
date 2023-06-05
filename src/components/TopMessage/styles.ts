@@ -21,7 +21,7 @@ export const Message = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 4px;
 `;
 
 export const Title = styled.Text`

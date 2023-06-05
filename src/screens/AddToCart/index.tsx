@@ -26,7 +26,6 @@ export function AddToCart() {
   const [measurement, setMeasurement] = useState("unidade");
 
   function handleAddToCart() {
-    console.log("measurement", measurement);
     addToCart(id, productName, category, price, quantity, measurement);
     goBack();
   }

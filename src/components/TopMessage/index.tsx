@@ -13,7 +13,7 @@ export function TopMessage({ title, icon: Icon }: Props) {
   const { COLORS } = useTheme();
   const insets = useSafeAreaInsets();
 
-  const paddingTop = insets.top + 5;
+  const paddingTop = insets.top;
 
   return (
     <Container style={{ paddingTop }}>

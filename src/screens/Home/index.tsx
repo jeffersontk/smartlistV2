@@ -13,7 +13,11 @@ import {
 } from "./styles";
 import { useQuery, useRealm } from "../../libs/realm";
 import { HistoricCard } from "../../components/HistoricCard";
-import { ChartBarHorizontal, ListBullets } from "phosphor-react-native";
+import {
+  ChartBarHorizontal,
+  CloudArrowUp,
+  ListBullets,
+} from "phosphor-react-native";
 import { useTheme } from "styled-components";
 import { Button } from "../../components/Button";
 import { usePurchase } from "../../context/purchase";
@@ -24,12 +28,14 @@ import {
   saveLastSyncTimestamp,
 } from "../../libs/asyncStorage/syncStorage";
 import { HistoricCardProps } from "../../components/HistoricCard";
+import { TopMessage } from "../../components/TopMessage";
 
 export function Home() {
   const { navigate } = useNavigation();
   const { purchase } = usePurchase();
   const { COLORS } = useTheme();
   const [historic, setHistoric] = useState<HistoricCardProps[]>([]);
+  const [percentageToSync, setPercentageToSync] = useState<string | null>(null);
   const realm = useRealm();
   const user = useUser();
 
@@ -85,11 +91,15 @@ export function Home() {
 
     if (percentage === 100) {
       await saveLastSyncTimestamp();
-
+      await fetchHistoricPurchase();
       Toast.show({
         text1: "Todos os dados estão sincronizados.",
         type: "info",
       });
+    }
+
+    if (percentage < 100) {
+      setPercentageToSync(`${percentage.toFixed(0)}% sincronizado. `);
     }
   }
 
@@ -132,40 +142,47 @@ export function Home() {
   }, []);
 
   return (
-    <Container>
-      <Content>
-        <Box>
-          <NavigationButton activeOpacity={0.7} onPress={handleMyList}>
-            <ListBullets size={28} color={COLORS.GRAY_100} />
-            <Text>Minha lista</Text>
-          </NavigationButton>
-          {/* <NavigationButton
+    <>
+      {percentageToSync &&
+        Toast.show({
+          text1: percentageToSync,
+          type: "info",
+        })}
+      <Container>
+        <Content>
+          <Box>
+            <NavigationButton activeOpacity={0.7} onPress={handleMyList}>
+              <ListBullets size={28} color={COLORS.GRAY_100} />
+              <Text>Minha lista</Text>
+            </NavigationButton>
+            {/* <NavigationButton
             activeOpacity={0.7}
             onPress={handleSelectPurchasesForAnalysis}
           >
             <ChartBarHorizontal size={32} color={COLORS.GRAY_100} />
             <Text>Analises de compras</Text>
           </NavigationButton> */}
-          <Title>Histórico</Title>
-          <FlatList
-            data={historic}
-            keyExtractor={(item) => String(item.id)}
-            renderItem={({ item }) => (
-              <HistoricCard
-                data={item}
-                onPress={() => handleDetailsPurchase(item)}
-              />
-            )}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={<Label>Nenhuma compra realizada</Label>}
-          />
-        </Box>
-        {Object.keys(purchase).length > 0 ? (
-          <Button title="Voltar as compras" onPress={handlePurchase} />
-        ) : (
-          <Button title="Iniciar Compras" onPress={handleStartPurchase} />
-        )}
-      </Content>
-    </Container>
+            <Title>Histórico</Title>
+            <FlatList
+              data={historic}
+              keyExtractor={(item) => String(item.id)}
+              renderItem={({ item }) => (
+                <HistoricCard
+                  data={item}
+                  onPress={() => handleDetailsPurchase(item)}
+                />
+              )}
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={<Label>Nenhuma compra realizada</Label>}
+            />
+          </Box>
+          {Object.keys(purchase).length > 0 ? (
+            <Button title="Voltar as compras" onPress={handlePurchase} />
+          ) : (
+            <Button title="Iniciar Compras" onPress={handleStartPurchase} />
+          )}
+        </Content>
+      </Container>
+    </>
   );
 }
