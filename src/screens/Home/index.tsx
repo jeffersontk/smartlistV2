@@ -28,7 +28,6 @@ import {
   saveLastSyncTimestamp,
 } from "../../libs/asyncStorage/syncStorage";
 import { HistoricCardProps } from "../../components/HistoricCard";
-import { TopMessage } from "../../components/TopMessage";
 
 export function Home() {
   const { navigate } = useNavigation();
@@ -69,7 +68,7 @@ export function Home() {
 
       const formatedHistoric = response.map((item) => {
         return {
-          id: item._id!.toString(),
+          id: item._id,
           marketName: item.marketName,
           purchaseDay: item.created_at,
           purchaseValue: item.purchaseValue,
@@ -148,11 +147,12 @@ export function Home() {
           text1: percentageToSync,
           type: "info",
         })}
+
       <Container>
         <Content>
           <Box>
             <NavigationButton activeOpacity={0.7} onPress={handleMyList}>
-              <ListBullets size={28} color={COLORS.GRAY_100} />
+              <ListBullets size={28} color={COLORS.TITLE_SECONDARY} />
               <Text>Minha lista</Text>
             </NavigationButton>
             {/* <NavigationButton

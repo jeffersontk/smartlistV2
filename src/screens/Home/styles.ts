@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
-  background: ${({ theme }) => theme.COLORS.GRAY_800};
+  background: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const Content = styled.View`
@@ -24,14 +24,14 @@ export const Label = styled.Text`
 `;
 
 export const Title = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
+  color: ${({ theme }) => theme.COLORS.TITLE_PRIMARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 `;
 export const Text = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_100};
+  color: ${({ theme }) => theme.COLORS.TITLE_SECONDARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.LG}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 `;
@@ -42,7 +42,7 @@ export const NavigationButton = styled.TouchableOpacity`
   padding: 16px;
   border-radius: 6px;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY};
 
   flex-direction: row;
   align-items: center;

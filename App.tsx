@@ -11,8 +11,6 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AppProvider, UserProvider } from "@realm/react";
 
-import theme from "./src/theme";
-
 import { REALM_APP_ID } from "@env";
 
 import { SignIn } from "./src/screens/SignIn";
@@ -24,10 +22,13 @@ import PurchaseProvider from "./src/context/purchase";
 import { TopMessage } from "./src/components/TopMessage";
 import { WifiSlash } from "phosphor-react-native";
 import { useNetInfo } from "@react-native-community/netinfo";
+import { getTheme } from "./src/theme/config";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
   const netInfo = useNetInfo();
+  const isDarkTheme = true;
+  const theme = getTheme(isDarkTheme);
 
   if (!fontsLoaded) {
     return <Loading />;

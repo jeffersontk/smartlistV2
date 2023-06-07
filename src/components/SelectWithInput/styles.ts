@@ -6,7 +6,7 @@ export const Container = styled.View`
   padding: 16px;
   border-radius: 6px;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+  background-color: ${({ theme }) => theme.COLORS.CARD};
 `;
 
 export const Label = styled.Text`
@@ -17,7 +17,7 @@ export const Label = styled.Text`
 
 export const Select = styled(Picker)`
   width: 50%;
-  color: ${({ theme }) => theme.COLORS.GRAY_200};
+  color: ${({ theme }) => theme.COLORS.GRAY_300};
   font-size: ${({ theme }) => theme.FONT_SIZE.XXXL}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 
@@ -36,7 +36,7 @@ export const Content = styled.View`
 `;
 
 export const Input = styled.TextInput`
-  color: ${({ theme }) => theme.COLORS.GRAY_200};
+  color: ${({ theme }) => theme.COLORS.GRAY_300};
   font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
   width: 100px;

@@ -5,7 +5,7 @@ export const Container = styled.View`
   padding: 16px;
   border-radius: 6px;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+  background-color: ${({ theme }) => theme.COLORS.CARD};
 
   flex-direction: row;
   align-items: center;
@@ -15,7 +15,7 @@ export const Container = styled.View`
 `;
 
 export const Label = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_100};
+  color: ${({ theme }) => theme.COLORS.TITLE_PRIMARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 `;

@@ -7,7 +7,7 @@ export const Container = styled.View`
   flex-direction: row;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY};
 `;
 
 export const Greeting = styled.View`

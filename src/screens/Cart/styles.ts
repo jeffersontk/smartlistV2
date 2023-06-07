@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.COLORS.GRAY_800};
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const Content = styled.View`
@@ -25,13 +25,13 @@ export const TotalInCart = styled.View`
 `;
 
 export const Title = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_100};
+  color: ${({ theme }) => theme.COLORS.WHITE};
   font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 `;
 
 export const TotalPrice = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_100};
+  color: ${({ theme }) => theme.COLORS.WHITE};
   font-size: ${({ theme }) => theme.FONT_SIZE.LG}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;
@@ -49,7 +49,7 @@ export const Row = styled.View`
 `;
 
 export const Text = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_200};
+  color: ${({ theme }) => theme.COLORS.GRAY_300};
   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 `;

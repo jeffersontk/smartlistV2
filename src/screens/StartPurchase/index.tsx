@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Container, Content } from "./styles";
-import { Header } from "../../components/Header";
 import { CustomInput } from "../../components/CustomInput";
 import { Button } from "../../components/Button";
 import { useNavigation } from "@react-navigation/native";

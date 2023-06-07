@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacityProps } from "react-native";
-import { Check, Clock } from "phosphor-react-native";
+import { Check, Clock, Trash } from "phosphor-react-native";
 import {
   Container,
   ContentDate,
@@ -12,9 +12,10 @@ import {
 import { useTheme } from "styled-components";
 import dayjs from "dayjs";
 import { Cart } from "../../libs/realm/schema/Cart";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export type HistoricCardProps = {
-  id: any;
+  id: Realm.BSON.UUID;
   marketName: string;
   purchaseDay: Date;
   purchaseValue: string;
@@ -27,9 +28,17 @@ export type HistoricCardProps = {
 type Props = TouchableOpacityProps & {
   data: HistoricCardProps;
   enableSelect?: boolean;
+  isDeleted?: boolean;
+  handleDelete?: () => void;
 };
 
-export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
+export function HistoricCard({
+  data,
+  enableSelect = false,
+  isDeleted = false,
+  handleDelete,
+  ...rest
+}: Props) {
   const { COLORS } = useTheme();
   const {
     purchaseDay,
@@ -46,7 +55,8 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
       setIsSelected(!isSelected);
     }
   }
-  const create = dayjs(purchaseDay).format("DD/MM/YYYY");
+
+  const create = dayjs(purchaseDay).format("DD/MMj/YYYY");
 
   return (
     <Container
@@ -56,7 +66,11 @@ export function HistoricCard({ data, enableSelect = false, ...rest }: Props) {
     >
       <Header>
         <MarketName>{marketName}</MarketName>
-        {data.isSync ? (
+        {isDeleted ? (
+          <TouchableOpacity activeOpacity={0.7} onPress={handleDelete}>
+            <Trash size={24} color={COLORS.RED_500} />
+          </TouchableOpacity>
+        ) : data.isSync ? (
           <Check size={24} color={COLORS.BRAND_LIGHT} />
         ) : (
           <Clock size={24} color={COLORS.GRAY_400} />

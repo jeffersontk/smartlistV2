@@ -5,7 +5,7 @@ export const Container = styled.TouchableOpacity`
   padding: 16px;
   border-radius: 6px;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+  background-color: ${({ theme }) => theme.COLORS.CARD};
 
   flex-direction: row;
   align-items: center;
@@ -20,7 +20,7 @@ interface labelProps {
 
 export const Label = styled.Text<labelProps>`
   color: ${({ theme, isDisabled }) =>
-    isDisabled ? theme.COLORS.GRAY_300 : theme.COLORS.GRAY_100};
+    isDisabled ? theme.COLORS.GRAY_300 : theme.COLORS.FONT_PRIMARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 
@@ -33,7 +33,7 @@ export const Info = styled.View`
 `;
 
 export const Text = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_400};
+  color: ${({ theme }) => theme.COLORS.TITLE_PRIMARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;

@@ -8,5 +8,5 @@ export const Container = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_600};
+  background-color: ${({ theme }) => theme.COLORS.CARD};
 `;

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Container, Content, Footer } from "./styles";
 import { ButtonIcon } from "../../components/ButtonIcon";
 import { Plus } from "phosphor-react-native";
-import { useTheme } from "styled-components";
 import { useNavigation } from "@react-navigation/native";
 import { ItemList } from "../../components/ItemList";
 import { FlatList } from "react-native";

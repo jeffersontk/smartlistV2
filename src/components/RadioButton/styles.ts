@@ -37,7 +37,7 @@ export const InternalCircle = styled.View`
 `;
 
 export const Label = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_200};
+  color: ${({ theme }) => theme.COLORS.TITLE_PRIMARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;

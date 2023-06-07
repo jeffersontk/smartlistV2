@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 export const Container = styled.TouchableOpacity`
   width: 100%;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700}
+  background-color: ${({ theme }) => theme.COLORS.CARD}
 
   
   border-radius: 6px;
@@ -23,7 +23,7 @@ export const Header = styled.View`
 `;
 
 export const MarketName = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_100};
+  color: ${({ theme }) => theme.COLORS.TITLE_PRIMARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.LG}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 `;
@@ -33,13 +33,13 @@ export const ContentDate = styled.View`
   gap: 8px;
 `;
 export const PurchaseDay = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_200};
+  color: ${({ theme }) => theme.COLORS.FONT_PRIMARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;
 
 export const Text = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_200};
+  color: ${({ theme }) => theme.COLORS.FONT_PRIMARY};
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;

@@ -1,16 +1,38 @@
 import React from "react";
 import { Container, Content, ItemCart, Name, Price, Quantity } from "./styles";
 import { HistoricCard, HistoricCardProps } from "../../components/HistoricCard";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useObject, useRealm } from "../../libs/realm";
+import { Purchase } from "../../libs/realm/schema/Purchase";
 
 export function PurchaseDetails() {
   const route = useRoute();
+  const { goBack } = useNavigation();
   const purchase = route.params as HistoricCardProps;
   const { cart } = purchase;
+  const _id = purchase.id;
+  const currentPurchase = useObject(Purchase, _id);
+  const realm = useRealm();
+
+  function handleDelete() {
+    try {
+      realm.write(() => {
+        realm.delete(currentPurchase);
+      });
+      goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Container>
-      <HistoricCard activeOpacity={1} data={purchase} />
+      <HistoricCard
+        activeOpacity={1}
+        data={purchase}
+        isDeleted
+        handleDelete={handleDelete}
+      />
 
       <Content
         data={cart}

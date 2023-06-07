@@ -14,7 +14,7 @@ export const Item = styled.TouchableOpacity<ItemProps>`
   padding: 16px;
   border-radius: 6px;
   background-color: ${({ theme, active = false }) =>
-    active ? theme.COLORS.BRAND_MID : theme.COLORS.GRAY_800};
+    active ? theme.COLORS.BRAND_MID : theme.COLORS.BACKGROUND};
 `;
 
 export const Label = styled.Text<ItemProps>`
