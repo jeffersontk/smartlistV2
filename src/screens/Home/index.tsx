@@ -143,6 +143,7 @@ export function Home() {
   return (
     <>
       {percentageToSync &&
+        percentageToSync.includes("100") &&
         Toast.show({
           text1: percentageToSync,
           type: "info",

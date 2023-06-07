@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { Image } from "expo-image";
 
-export const Container = styled.View`
+export const Container = styled.TouchableOpacity`
   width: 100%;
   padding: 32px;
   flex-direction: row;

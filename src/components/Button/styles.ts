@@ -10,8 +10,10 @@ export const Container = styled.TouchableOpacity<Props>`
   max-height: 56px;
   border-radius: 6px;
 
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 
   background-color: ${({ theme, type }) =>
     type == "google" ? theme.COLORS.WHITE : theme.COLORS.BRAND_MID};

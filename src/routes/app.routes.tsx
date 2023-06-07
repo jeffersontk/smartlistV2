@@ -14,6 +14,7 @@ import { PurchasingAnalysis } from "../screens/PurchasingAnalysis";
 import { PurchaseDetails } from "../screens/PurchaseDetails";
 import { SelectPurchaseForAnalysis } from "../screens/SelectPurchaseForAnalysis";
 import { Checkout } from "../screens/Checkout";
+import { Profile } from "../screens/Profile";
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -25,6 +26,13 @@ export function AppRoutes() {
         component={Home}
         options={{
           header: () => <HeaderHome />,
+        }}
+      />
+      <Screen
+        name="profile"
+        component={Profile}
+        options={{
+          header: () => <Header title="Perfil" />,
         }}
       />
       <Screen

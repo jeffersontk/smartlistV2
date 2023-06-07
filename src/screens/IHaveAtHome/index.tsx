@@ -32,8 +32,10 @@ export function IHaveAtHome() {
       category,
       quantity,
       measurement,
-      selectedOption
+      selectedOption,
+      true
     );
+
     goBack();
   }
 

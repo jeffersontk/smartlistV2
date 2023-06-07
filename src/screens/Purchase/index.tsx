@@ -41,6 +41,7 @@ export function Purchase() {
     iHaveAtHomeList,
     resetCart,
     resetIHaveAtHomeList,
+    resetPurchase,
     removeFromIHaveAtHomeList,
   } = usePurchase();
 
@@ -77,7 +78,7 @@ export function Purchase() {
 
   function handleChangeList() {
     Alert.alert(
-      "Deseja trocar de lista?",
+      "Deseja Cancelar as compras?",
       "Ao fazer isso, o carrinho será limpo.",
       [
         { text: "Não", style: "cancel" },
@@ -86,7 +87,8 @@ export function Purchase() {
           onPress: () => {
             resetCart();
             resetIHaveAtHomeList();
-            navigate("startpurchase");
+            resetPurchase();
+            navigate("home");
           },
         },
       ]
@@ -120,71 +122,75 @@ export function Purchase() {
         category
       );
 
-      CheckIsProductInCart(productsFilterByCategory);
-
-      return products;
+      setListProducts(productsFilterByCategory);
+      if (cart.length > 0) {
+        CheckIsProductInCart(productsFilterByCategory);
+      }
     } catch (error) {
       console.error("Error retrieving products:", error);
       return null;
     }
   }
+
   function CheckIsProductInCart(list: any) {
     if (cart.length > 0) {
-      const updateList = list.map((product: any, index: number) => {
+      const updateList = list.map((product: any) => {
         const isProductInCart = cart.some((item) => item.name === product.name);
-        const isProductIHaveAtHome = iHaveAtHomeList.some(
+        product.isCheck = isProductInCart;
+        return product;
+      });
+
+      setListProducts(updateList);
+    }
+  }
+
+  function CheckIsProductAtHome(list: any) {
+    if (iHaveAtHomeList.length > 0) {
+      const updateList = list.map((product: any) => {
+        const matchedItem = iHaveAtHomeList.find(
           (item) => item.name === product.name
         );
-
-        const filt = iHaveAtHomeList.filter(
-          (item) => item.name === product.name
-        );
-        if (index >= 0 && index < filt.length) {
-          product.isCheck = isProductInCart;
-          product.isCheckAtHome = isProductIHaveAtHome;
-          product.quantity = filt[index].quantity ?? 0;
-          product.measurement = filt[index].measurement ?? "";
-          product.status = filt[index].status ?? "";
-
-          return product;
-        } else {
-          product.isCheck = isProductInCart;
-          product.isCheckAtHome = isProductIHaveAtHome;
-
-          return product;
+        if (matchedItem?.isAtHome) {
+          product.isCheckAtHome = matchedItem.isAtHome;
+          product.quantity = matchedItem.quantity ?? 0;
+          product.measurement = matchedItem.measurement ?? "";
+          product.status = matchedItem.status ?? "";
         }
+        return product;
       });
 
       setListProducts(updateList);
     } else {
-      setListProducts(list);
+      const updateList = list.map((product: any) => {
+        product.isCheckAtHome = false;
+        product.quantity = "";
+        product.measurement = "";
+        product.status = "";
+        return product;
+      });
+      setListProducts(updateList);
     }
   }
 
   function handleRemoveIHaveAtHome(id: string) {
-    const update = listProducts.map((item: any) => {
-      if (purchase.typeList === "myList" ? item._id : item.id === id) {
-        const updatedItem = JSON.parse(JSON.stringify(item));
-        updatedItem.quantity = "";
-        updatedItem.measurement = "";
-        updatedItem.status = "";
-
-        return updatedItem;
-      } else {
-        return item;
-      }
-    });
-    setListProducts(update);
     removeFromIHaveAtHomeList(id);
   }
 
   useEffect(() => {
-    if (purchase.typeList === "suggestedList") {
-      getCategoryByApi();
-    } else {
-      getCategoryByRealm();
+    getCategoryByRealm();
+  }, [category]);
+
+  useEffect(() => {
+    if (listProducts.length > 0) {
+      CheckIsProductInCart(listProducts);
     }
-  }, [purchase, category, cart]);
+  }, [cart]);
+
+  useEffect(() => {
+    if (listProducts.length > 0) {
+      CheckIsProductAtHome(listProducts);
+    }
+  }, [iHaveAtHomeList]);
 
   useEffect(() => {
     if (searchProduct.length > 0) {
@@ -230,27 +236,17 @@ export function Purchase() {
                 return (
                   <Product
                     title={item.name}
-                    onPress={() =>
-                      handleAddToCart(
-                        item.name,
-                        purchase.typeList === "myList" ? item._id : item.id
-                      )
-                    }
+                    onPress={() => handleAddToCart(item.name, item._id)}
                     isCheck={item.isCheck}
                     isCheckAtHome={item.isCheckAtHome}
                     quantityAtHome={item.quantity}
                     measurement={item.measurement}
                     status={item.status}
                     goToIHaveAtHome={() => {
-                      handleIHaveAtHome(
-                        item.name,
-                        purchase.typeList === "myList" ? item._id : item.id
-                      );
+                      handleIHaveAtHome(item.name, item._id);
                     }}
                     onRemoveToIHaveAtHome={() => {
-                      handleRemoveIHaveAtHome(
-                        purchase.typeList === "myList" ? item._id : item.id
-                      );
+                      handleRemoveIHaveAtHome(item.name);
                     }}
                   />
                 );
@@ -269,7 +265,7 @@ export function Purchase() {
           />
           {!searchOpen && (
             <TouchableOpacity activeOpacity={0.7} onPress={handleChangeList}>
-              <Text>Trocar lista</Text>
+              <Text>Cancelar</Text>
             </TouchableOpacity>
           )}
         </Row>

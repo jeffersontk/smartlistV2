@@ -24,6 +24,7 @@ interface ProductIHaveAtHome {
   quantity: string;
   measurement: string;
   status: string;
+  isAtHome: boolean;
 }
 
 interface PurchaseContextType {
@@ -45,7 +46,8 @@ interface PurchaseContextType {
     category: string,
     quantity: string,
     measurement: string,
-    status: string
+    status: string,
+    isAtHome: boolean
   ) => void;
   cart: CartProps[];
   iHaveAtHomeList: ProductIHaveAtHome[];
@@ -80,7 +82,8 @@ const PurchaseContext = createContext<PurchaseContextType>({
     category: string,
     quantity: string,
     measurement: string,
-    status: string
+    status: string,
+    isAtHome: boolean
   ) => {},
   cart: [],
   iHaveAtHomeList: [],
@@ -170,10 +173,12 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
       realm.delete(product);
     }); */
   }
-  function removeFromIHaveAtHomeList(productId: string) {
-    const updatedCart = iHaveAtHomeList.filter((item) => item.id !== productId);
 
-    setIHaveAtHomeList(updatedCart);
+  function removeFromIHaveAtHomeList(name: string) {
+    const updatedIHaveAtHomeList = iHaveAtHomeList.filter((item) => {
+      return item.name !== name;
+    });
+    setIHaveAtHomeList(updatedIHaveAtHomeList);
   }
 
   function addToIHaveAtHomeList(
@@ -182,12 +187,13 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
     category: string,
     quantity: string,
     measurement: string,
-    status: string
+    status: string,
+    isAtHome: boolean
   ) {
     const isProductInCart = iHaveAtHomeList.some((item) => item.name === name);
 
     if (isProductInCart) {
-      Alert.alert("Aviso", "Produto já esta no carrinho!");
+      Alert.alert("Aviso", "Produto já marcado tendo em casa!");
       return;
     }
     const newProduct = {
@@ -197,6 +203,7 @@ function PurchaseProvider({ children }: PurchaseProviderProps) {
       quantity,
       measurement,
       status,
+      isAtHome,
     };
 
     setIHaveAtHomeList([...iHaveAtHomeList, newProduct]);

@@ -44,7 +44,7 @@ export const Label = styled.Text`
 `;
 
 export const Text = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_400};
+  color: ${({ theme }) => theme.COLORS.RED_500};
   font-size: ${({ theme }) => theme.FONT_SIZE.LG}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;

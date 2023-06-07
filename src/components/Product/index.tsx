@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef } from "react";
+import React, { MutableRefObject, useEffect, useRef } from "react";
 import { TouchableOpacityProps } from "react-native";
 import { Container, Info, Label, Text } from "./styles";
 import { CheckSquare, Square } from "phosphor-react-native";
@@ -89,9 +89,8 @@ export function Product({
   return (
     <Swipeable
       ref={swipeableRef}
-      renderLeftActions={
-        !isCheckAtHome && status !== "iNeed" ? handleIHave : handleEnabledButton
-      }
+      renderLeftActions={isCheckAtHome ? handleEnabledButton : handleIHave}
+      enabled={!isCheck}
     >
       <Container
         activeOpacity={0.7}
@@ -111,7 +110,7 @@ export function Product({
               }).format(+price)}
             </Text>
           )}
-          {quantityAtHome && (
+          {quantityAtHome && quantityAtHome.length > 0 && (
             <Text>
               Quantidade em casa: {quantityAtHome} {measurement}
             </Text>
